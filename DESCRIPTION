@@ -25,4 +25,8 @@ Imports:
     parsnip,
     workflows,
     yardstick,
-    recipes
+    recipes,
+    vip,
+    glmnet,
+    xgboost,
+    earth

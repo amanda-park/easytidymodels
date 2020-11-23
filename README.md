@@ -8,7 +8,9 @@
 <!-- badges: end -->
 
 The goal of easytidymodels is to make running analyses in R using the
-tidymodels framework even easier.
+tidymodels framework even easier. This is custom code I wrote to make
+the code more reproducible and avoid copy-pasting so often. Note: this
+is currently a work in progress\!
 
 ## Installation
 
@@ -54,3 +56,47 @@ folds <- cvFolds(train_df, 5)
 rec <- createRecipe(train_df, 
                     responseVar = resp)
 ```
+
+## Classification Examples
+
+### Logistic Regression
+
+``` r
+# #Run logistic regression - only commented to avoid readme error
+# lr <- logRegBinary(recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df)
+
+# #Shows training and testing data confusion matrix
+# lr$trainConfMat
+# lr$testConfMat
+# 
+# #Shows training data confusion matrix plot
+# lr$trainConfMatPlot
+# lr$testConfMatPlot
+# 
+# #Shows training data score based on classification metrics
+# lr$trainScore
+# lr$testScore
+# 
+# #Shows actual predictions for training and testing
+# lr$trainPred
+# lr$testPred
+# 
+# #Shows tuned model optimized on evaluation metric chosen
+# lr$final
+
+# #XGBoost classification
+# xgClass <- xgBinaryClassif(
+#                    recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df,
+#                    evalMetric = "roc_auc"
+#                    )
+```
+
+### XGBoost
