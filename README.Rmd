@@ -105,10 +105,15 @@ Tunes both the penalty and mixture terms, fits a model based on the classificati
 ### XGBoost
 
 Tunes the following:
+
    * learn_rate (or eta)
+   
    * sample_size (or subsample)
+   
    * mtry (or colsample_bytree)
+   
    * min_n (or min_child_weight)
+   
    * tree_depth (or max_dept)
 
 Fits a model based on the classification evaluation metric specified (default bal_accuracy), returns an evaluation of the model on both the training and testing data, and also returns variable importance for the model.

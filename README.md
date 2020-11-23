@@ -104,9 +104,17 @@ data.
 
 ### XGBoost
 
-Tunes the following: \* learn\_rate (or eta) \* sample\_size (or
-subsample) \* mtry (or colsample\_bytree) \* min\_n (or
-min\_child\_weight) \* tree\_depth (or max\_dept)
+Tunes the following:
+
+  - learn\_rate (or eta)
+
+  - sample\_size (or subsample)
+
+  - mtry (or colsample\_bytree)
+
+  - min\_n (or min\_child\_weight)
+
+  - tree\_depth (or max\_dept)
 
 Fits a model based on the classification evaluation metric specified
 (default bal\_accuracy), returns an evaluation of the model on both the
