@@ -22,11 +22,11 @@ The goal of easytidymodels is to make running analyses in R using the tidymodels
 
 ## Installation
 
-You can install easytidymodels like this
+You can install easytidymodels like this:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("easytidymodels")
+devtools::install_github("amanda-park/easytidymodels")
 ```
 
 ## Example
@@ -42,8 +42,12 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var3 = c(rnorm(55), rnorm(45, 5)),
                  var4 = rnorm(100))
 
+#Set response variable
+resp <- "var1"
+
+
 split <- trainTestSplit(data = df, 
-                        responseVar = var1)
+                        responseVar = resp)
 
 #Create training, testing, and bootstrapped data sets
 train_df <- split$train
@@ -52,6 +56,9 @@ boot_df <- split$boot
 
 #Create cross-validation folds
 folds <- cvFolds(train_df, 5)
-```
 
+#Create simple recipe object
+rec <- createRecipe(train_df, 
+                    responseVar = resp)
+```
 
