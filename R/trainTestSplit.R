@@ -37,7 +37,6 @@ trainTestSplit <- function(data = df,
 
   datTrain <- rsample::training(split)
   datTest <- rsample::testing(split)
-
   datBoot <- rsample::bootstraps(datTrain)
 
   output <- list("train" = datTrain,

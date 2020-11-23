@@ -31,20 +31,27 @@ devtools::install_github("easytidymodels")
 
 ## Example
 
-This is a basic example of one function in the package:
+This is a basic example of one splitting data in the package. The function trainTestSplit is a wrapper for rsample's function that allow you to nicely split up your data into training and testing sets. For reusability's sake it has been put into a function here. 
 
 ```{r trainTestSplit}
 library(easytidymodels)
 
-df <- data.frame(var1 = c(rep(1, 50), rep(0, 50)),
-                      var2 = rnorm(100),
-                      var3 = c(rnorm(55), rnorm(45, 5)))
+#Simulate data
+df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
+                 var2 = rnorm(100),
+                 var3 = c(rnorm(55), rnorm(45, 5)),
+                 var4 = rnorm(100))
 
-split <- trainTestSplit(data = df)
+split <- trainTestSplit(data = df, 
+                        responseVar = var1)
 
+#Create training, testing, and bootstrapped data sets
 train_df <- split$train
 test_df <- split$test
 boot_df <- split$boot
+
+#Create cross-validation folds
+folds <- cvFolds(train_df, 5)
 ```
 
 

@@ -17,4 +17,5 @@ Suggests:
     testthat
 Imports: 
     tidymodels,
-    rsample
+    rsample,
+    dplyr

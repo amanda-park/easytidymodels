@@ -5,7 +5,7 @@
 \title{Split data into training and testing}
 \usage{
 trainTestSplit(
-  data = dat,
+  data = df,
   splitAmt = 0.8,
   timeDependent = FALSE,
   responseVar = "nameOfResponseVar",
