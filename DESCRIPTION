@@ -1,0 +1,19 @@
+Package: easytidymodels
+Title: Make tidymodels even easier to run
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Amanda",
+           family = "Park",
+           role = c("aut", "cre"),
+           email = "AmandaParkDev@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Tidymodels is an incredibly useful framework to making end to end machine learning analyses. Since the process follows a preplanned framework, the process can be further streamlined to make analysis even simpler and easier to reproduce. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat
+Imports: 
+    tidymodels
