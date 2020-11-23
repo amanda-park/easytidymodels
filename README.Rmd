@@ -1,16 +1,24 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # easytidymodels
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-The goal of easytidymodels is to make running analyses in R using the
-tidymodels framework even easier. This is custom code I wrote to make
-the code more reproducible and avoid copy-pasting so often. Note: this
-is currently a work in progress\!
+The goal of easytidymodels is to make running analyses in R using the tidymodels framework even easier. This is custom code I wrote to make the code more reproducible and avoid copy-pasting so often. Note: this is currently a work in progress!
 
 ## Installation
 
@@ -23,19 +31,14 @@ devtools::install_github("amanda-park/easytidymodels")
 
 ## Preparing Data for Analysis
 
-This is a basic example of one splitting data in the package.
+This is a basic example of one splitting data in the package. 
 
-  - The function trainTestSplit is a wrapper for rsample’s function that
-    allow you to nicely split up your data into training and testing
-    sets. For reusability’s sake it has been put into a function here.
-  - The function cvFolds is a wrapper for rsample’s vfold\_cv.
-  - The function createRecipe just creates a simple recipe of your
-    dataset. If more advanced recipes are required, I recommend calling
-    recipe() and creating one specific to your dataset’s needs.
+* The function trainTestSplit is a wrapper for rsample's function that allow you to nicely split up your data into training and testing sets. For reusability's sake it has been put into a function here. 
+* The function cvFolds is a wrapper for rsample's vfold_cv.
+* The function createRecipe just creates a simple recipe of your dataset. If more advanced recipes are required, I recommend calling recipe() and creating one specific to your dataset's needs.
 
-<!-- end list -->
 
-``` r
+```{r trainTestSplit}
 library(easytidymodels)
 
 #Simulate data
@@ -69,12 +72,9 @@ rec <- createRecipe(train_df,
 
 ### Logistic Regression
 
-Tunes both the penalty and mixture terms, fits a model based on the
-classification evaluation metric specified (default bal\_accuracy), and
-returns an evaluation of the model on both the training and testing
-data.
+Tunes both the penalty and mixture terms, fits a model based on the classification evaluation metric specified (default bal_accuracy), and returns an evaluation of the model on both the training and testing data.
 
-``` r
+```{r logReg}
 # #Run logistic regression - only commented to avoid readme error
 # lr <- logRegBinary(recipe = rec,
 #                    response = resp,
@@ -106,22 +106,19 @@ data.
 
 Tunes the following:
 
-  - learn\_rate (or eta)
+   * learn_rate (or eta)
+   
+   * sample_size (or subsample)
+   
+   * mtry (or colsample_bytree)
+   
+   * min_n (or min_child_weight)
+   
+   * tree_depth (or max_dept)
 
-  - sample\_size (or subsample)
+Fits a model based on the classification evaluation metric specified (default bal_accuracy), returns an evaluation of the model on both the training and testing data, and also returns variable importance for the model.
 
-  - mtry (or colsample\_bytree)
-
-  - min\_n (or min\_child\_weight)
-
-  - tree\_depth (or max\_dept)
-
-Fits a model based on the classification evaluation metric specified
-(default bal\_accuracy), returns an evaluation of the model on both the
-training and testing data, and also returns variable importance for the
-model.
-
-``` r
+```{r xgboostClass}
 # #XGBoost classification
 # xgClass <- xgBinaryClassif(
 #                    recipe = rec,
@@ -140,3 +137,5 @@ model.
 # #Feature importance variables
 # xgClass$featImpVars
 ```
+
+

@@ -16,4 +16,17 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat
 Imports: 
-    tidymodels
+    rsample,
+    dplyr,
+    tidyr,
+    magrittr,
+    dials,
+    tune,
+    parsnip,
+    workflows,
+    yardstick,
+    recipes,
+    vip,
+    glmnet,
+    xgboost,
+    earth
