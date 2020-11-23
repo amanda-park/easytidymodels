@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-trainTestSplit <- function(data = dat,
+trainTestSplit <- function(data = df,
                            splitAmt = .8,
                            timeDependent = FALSE,
                            responseVar = "nameOfResponseVar",
@@ -40,9 +40,9 @@ trainTestSplit <- function(data = dat,
 
   datBoot <- rsample::bootstraps(datTrain)
 
-  res <- list("datTrain" = datTrain,
-              "datTest" = datTest,
-              "datBoot" = datBoot)
+  output <- list("train" = datTrain,
+              "test" = datTest,
+              "boot" = datBoot)
 
-  return(res)
+  return(output)
 }

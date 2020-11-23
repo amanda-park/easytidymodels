@@ -1,14 +1,24 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # easytidymodels
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-The goal of easytidymodels is to make running analyses in R using the
-tidymodels framework even easier.
+The goal of easytidymodels is to make running analyses in R using the tidymodels framework even easier.
 
 ## Installation
 
@@ -23,7 +33,7 @@ devtools::install_github("easytidymodels")
 
 This is a basic example of one function in the package:
 
-``` r
+```{r trainTestSplit}
 library(easytidymodels)
 
 df <- data.frame(var1 = c(rep(1, 50), rep(0, 50)),
@@ -36,3 +46,5 @@ train_df <- split$train
 test_df <- split$test
 boot_df <- split$boot
 ```
+
+

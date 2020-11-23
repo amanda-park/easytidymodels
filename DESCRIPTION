@@ -16,4 +16,5 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat
 Imports: 
-    tidymodels
+    tidymodels,
+    rsample
