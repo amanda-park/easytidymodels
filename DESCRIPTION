@@ -33,4 +33,5 @@ Imports:
     modeltime,
     modeltime.ensemble,
     ggplot2,
-    broom
+    broom,
+    ranger

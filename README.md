@@ -43,7 +43,8 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var2 = rnorm(100),
                  var3 = c(rnorm(55), rnorm(45, 5)),
                  var4 = rnorm(100),
-                 var5 = c(rnorm(60), rnorm(40, 3)))
+                 var5 = c(rnorm(60), rnorm(40, 3)),
+                 var6 = as.factor(c(rep(0, 20), rep(1, 40), rep(2, 40))))
 
 #Set response variable
 resp <- "var2"
@@ -139,6 +140,32 @@ model.
 # 
 # #Feature importance variables
 # xgClass$featImpVars
+```
+
+## Multiclass Classification (models currently not working in package… investigate)
+
+### Multinomial Regression
+
+``` r
+# mr <- logRegMulti(
+#                    recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df
+#                    )
+```
+
+### XGBoost Multiclass Classifcation
+
+``` r
+# xgMult <- xgMultiClassif(
+#                    recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df
+#                    )
 ```
 
 ## Regression
