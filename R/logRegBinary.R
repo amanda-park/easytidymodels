@@ -31,14 +31,14 @@ logRegBinary <- function(recipe = rec,
 
   grid <- dials::grid_regular(dials::parameters(mod), levels = 15)
 
-  final <- easytidymodels::workflowFunc(mod = mod,
+  final <- workflowFunc(mod = mod,
                         formula = formula,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
                         type = "binary class")
 
-  output <- easytidymodels::trainTestEvalClassif(final = final,
+  output <- trainTestEvalClassif(final = final,
                                  train = train,
                                  test = test,
                                  response = response,

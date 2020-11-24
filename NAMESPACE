@@ -3,6 +3,7 @@
 export(createRecipe)
 export(cvFolds)
 export(logRegBinary)
+export(modelTimeSeries)
 export(trainTestSplit)
 export(xgBinaryClassif)
 importFrom(magrittr,"%>%")

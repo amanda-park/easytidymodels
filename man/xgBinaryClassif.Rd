@@ -17,6 +17,8 @@ xgBinaryClassif(
 )
 }
 \arguments{
+\item{gridNumber}{Numeric. Size of the grid you want XGBoost to explore. Default is 10.}
+
 \item{recipe}{A recipe object.}
 
 \item{folds}{A rsample::vfolds_cv object.}

@@ -29,4 +29,6 @@ Imports:
     vip,
     glmnet,
     xgboost,
-    earth
+    earth,
+    modeltime,
+    modeltime.ensemble

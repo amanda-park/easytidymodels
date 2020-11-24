@@ -2,6 +2,7 @@
 #'
 #' Runs XGBoost for binary classification.
 #'
+#' @param gridNumber Numeric. Size of the grid you want XGBoost to explore. Default is 10.
 #' @param recipe A recipe object.
 #' @param folds A rsample::vfolds_cv object.
 #' @param train The training data set.
@@ -68,7 +69,7 @@ xgBinaryClassif <- function(gridNumber = 10,
                         evalMetric = evalMetric,
                         type = "binary class")
 
-  output <- easytidymodels::trainTestEvalClassif(final = final,
+  output <- trainTestEvalClassif(final = final,
                                  train = train,
                                  test = test,
                                  response = response)
