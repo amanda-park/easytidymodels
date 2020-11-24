@@ -2,7 +2,12 @@
 
 export(createRecipe)
 export(cvFolds)
+export(linearRegress)
 export(logRegBinary)
+export(marsRegress)
+export(modelTimeSeries)
+export(rfRegress)
 export(trainTestSplit)
 export(xgBinaryClassif)
+export(xgRegress)
 importFrom(magrittr,"%>%")

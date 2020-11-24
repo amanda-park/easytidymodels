@@ -46,7 +46,7 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var5 = c(rnorm(60), rnorm(40, 3)))
 
 #Set response variable
-resp <- "var1"
+resp <- "var2"
 
 
 split <- trainTestSplit(data = df, 
@@ -139,4 +139,119 @@ model.
 # 
 # #Feature importance variables
 # xgClass$featImpVars
+```
+
+## Regression
+
+### Linear Regression
+
+``` r
+# linReg <- linearRegress(
+#   response = resp,
+#   data = df,
+#   train = train,
+#   test = test,
+#   tidyModelVersion = FALSE,
+#   recipe = rec,
+#   folds = folds,
+#   evalMetric = "rmse"
+# )
+```
+
+### MARS
+
+``` r
+# mars <- marsRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "mae"
+# )
+```
+
+### XGBoost
+
+``` r
+# xgReg <- xgRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   calcFeatImp = TRUE,
+#   evalMetric = "mae"
+# )
+# 
+# #Show accuracy metrics testing data
+# xgReg$testScore
+# 
+# #Feature importance plot
+# xgReg$featImpPlot
+```
+
+### Random Forest Regression
+
+``` r
+# rfReg <- rfRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   calcFeatImp = TRUE, 
+#   evalMetric = "mae"
+# )
+```
+
+## Time Series
+
+``` r
+
+# df$Date <- seq(as.Date("2020-01-01"), as.Date("2020-04-09"), by="days")
+# dts <- df %>% select(var2, Date) %>% set_names("Value", "Date")
+# 
+# resp <- "Value"
+# pred <- "Date"
+# 
+# split <- trainTestSplit(data = dts,
+#                            splitAmt = .8,
+#                            timeDependent = TRUE,
+#                            responseVar = resp,
+#                            stratifyOnResponse = FALSE)
+# 
+# #Remove data sets from list
+# tr <- split$train
+# ts <- split$test
+# 
+# #Run time series models
+# res <- modelTimeSeries(days = 21)
+# 
+# #See accuracy table for models, sorted by lowest MASE
+# res$accuracyTable
+#   
+# #Return interactive plotly cross validation plot
+# res$crossValPlot
+# 
+# #See forecast table (models ordered based on best MASE)
+# res$forecastTable
+# 
+# #Show forecast
+# res$forecastPlot
+# 
+# #Show actual values of forecast
+# res$forecastValues
+# 
+# #Show ensemble models
+# res$accuracyEnsembleTable
+# 
+# #Show ensemble cross-validation forecasts
+# res$ensembleCrossValPlot
+# 
+# #Show actual values of ensemble forecast
+# res$ensembleForecastValues
+# 
+# #Show forecast of ensemble models
+# res$ensembleForecastPlot
 ```

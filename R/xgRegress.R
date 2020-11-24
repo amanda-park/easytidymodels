@@ -1,6 +1,6 @@
-#' XGBoost Binary Classification
+#' XGBoost Regression
 #'
-#' Runs XGBoost for binary classification.
+#' Runs XGBoost for regression
 #'
 #' @param gridNumber Numeric. Size of the grid you want XGBoost to explore. Default is 10.
 #' @param recipe A recipe object.
@@ -10,7 +10,7 @@
 #' @param response The variable that is the response for analysis.
 #' @param treeNum The number of trees to evaluate your model with.
 #' @param calcFeatImp Do you want to calculate feature importance for your model? If not, set = FALSE.
-#' @param evalMetric The classification metric you want to evaluate the model's accuracy on.
+#' @param evalMetric The regression metric you want to evaluate the model's accuracy on.
 #'
 #' @return
 #' @export
@@ -18,15 +18,15 @@
 #' @examples
 #' @importFrom magrittr "%>%"
 
-xgBinaryClassif <- function(gridNumber = 10,
-                            recipe = rec,
-                            folds = cvFolds,
-                            train = datTrain,
-                            test = datTest,
-                            response = response,
-                            treeNum = 100,
-                            calcFeatImp = TRUE,
-                            evalMetric = "bal_accuracy") {
+xgRegress <- function(gridNumber = 10,
+                      recipe = rec,
+                      folds = cvFolds,
+                      train = datTrain,
+                      test = datTest,
+                      response = response,
+                      treeNum = 100,
+                      calcFeatImp = TRUE,
+                      evalMetric = "rmse") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
@@ -41,25 +41,27 @@ xgBinaryClassif <- function(gridNumber = 10,
     loss_reduction = tune() #gamma
   ) %>%
     parsnip::set_engine("xgboost",
-               objective = "binary:logistic",
+               objective = "reg:squarederror",
                lambda=1,
                alpha=0,
                num_class=2,
                verbose=1
     ) %>%
-    parsnip::set_mode("classification")
+    parsnip::set_mode("regression")
+
+  subset <- dplyr::select(train, -matches(response))
 
   #Set XGBoost parameters to tune
   params <- dials::parameters(
     dials::min_n(),
     dials::tree_depth(),
     dials::learn_rate(),
-    dials::finalize(dials::mtry(),dplyr::select(train,-matches(response)), force = TRUE),
+    dials::finalize(dials::mtry(), subset),
     sample_size = dials::sample_prop(c(0.4, 0.9)),
     dials::loss_reduction()
   )
 
-  #Set XGBoost grid
+
   grid <- dials::grid_max_entropy(params, size = gridNumber)
 
   final <- workflowFunc(mod = mod,
@@ -67,9 +69,9 @@ xgBinaryClassif <- function(gridNumber = 10,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
-                        type = "binary class")
+                        type = "regress")
 
-  output <- trainTestEvalClassif(final = final,
+  output <- trainTestEvalRegress(final = final,
                                  train = train,
                                  test = test,
                                  response = response)
@@ -84,12 +86,8 @@ xgBinaryClassif <- function(gridNumber = 10,
     #Add variables to output
     output$featImpPlot <- featImp$plot
     output$featImpVars <- featImp$vars
-    # output$alePlot <- featImp$ale
-    # output$limePlot <- featImp$lime
-    # output$shapleyPlot <- featImp$shapley
-    # output$interactPlot <- featImp$interact
-    # output$final <- final
   }
 
   return(output)
+
 }
