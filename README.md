@@ -46,7 +46,7 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var5 = c(rnorm(60), rnorm(40, 3)))
 
 #Set response variable
-resp <- "var1"
+resp <- "var2"
 
 
 split <- trainTestSplit(data = df, 
@@ -139,6 +139,70 @@ model.
 # 
 # #Feature importance variables
 # xgClass$featImpVars
+```
+
+## Regression
+
+### Linear Regression
+
+``` r
+# linReg <- linearRegress(
+#   response = resp,
+#   data = df,
+#   train = train,
+#   test = test,
+#   tidyModelVersion = FALSE,
+#   recipe = rec,
+#   folds = folds,
+#   evalMetric = "rmse"
+# )
+```
+
+### MARS
+
+``` r
+# mars <- marsRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "mae"
+# )
+```
+
+### XGBoost
+
+``` r
+# xgReg <- xgRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   calcFeatImp = TRUE,
+#   evalMetric = "mae"
+# )
+# 
+# #Show accuracy metrics testing data
+# xgReg$testScore
+# 
+# #Feature importance plot
+# xgReg$featImpPlot
+```
+
+### Random Forest Regression
+
+``` r
+# rfReg <- rfRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   calcFeatImp = TRUE, 
+#   evalMetric = "mae"
+# )
 ```
 
 ## Time Series

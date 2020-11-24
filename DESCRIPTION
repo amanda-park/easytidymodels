@@ -31,4 +31,6 @@ Imports:
     xgboost,
     earth,
     modeltime,
-    modeltime.ensemble
+    modeltime.ensemble,
+    ggplot2,
+    broom
