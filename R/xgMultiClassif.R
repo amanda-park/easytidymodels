@@ -89,5 +89,5 @@ xgMultiClassif <- function(gridNumber = 10,
     output$final <- final
   }
 
-  return(final)
+  return(output)
 }
