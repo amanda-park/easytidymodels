@@ -50,23 +50,23 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var6 = as.factor(c(rep(0, 20), rep(1, 40), rep(2, 40))))
 
 #Set response variable
-resp <- "var2"
+resp <- "var6"
 
 
 split <- trainTestSplit(data = df, 
                         responseVar = resp)
 
+#Create simple recipe object
+rec <- createRecipe(split$train, 
+                    responseVar = resp)
+
 #Create training, testing, and bootstrapped data sets
-train_df <- split$train
-test_df <- split$test
+train_df <- recipes::bake(rec, split$train)
+test_df <- recipes::bake(rec, split$test)
 boot_df <- split$boot
 
 #Create cross-validation folds
 folds <- cvFolds(train_df, 5)
-
-#Create simple recipe object
-rec <- createRecipe(train_df, 
-                    responseVar = resp)
 ```
 
 ## Classification Examples
@@ -139,7 +139,7 @@ Fits a model based on the classification evaluation metric specified (default ba
 # xgClass$featImpVars
 ```
 
-## Multiclass Classification (models currently not working in package... investigate)
+## Multiclass Classification
 
 ### Multinomial Regression
 
@@ -163,7 +163,6 @@ Fits a model based on the classification evaluation metric specified (default ba
 #                    train = train_df,
 #                    test = test_df
 #                    )
-
 ```
 
 ## Regression
@@ -174,9 +173,9 @@ Fits a model based on the classification evaluation metric specified (default ba
 # linReg <- linearRegress(
 #   response = resp,
 #   data = df,
-#   train = train,
-#   test = test,
-#   tidyModelVersion = FALSE,
+#   train = train_df,
+#   test = test_df,
+#   tidyModelVersion = TRUE,
 #   recipe = rec,
 #   folds = folds,
 #   evalMetric = "rmse"

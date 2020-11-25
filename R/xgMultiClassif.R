@@ -46,7 +46,7 @@ xgMultiClassif <- function(gridNumber = 10,
                objective = "multi:softprob",
                lambda=1,
                alpha=0,
-               num_class=classNumber,
+               num_class=levelNumber,
                verbose=1
     ) %>%
     parsnip::set_mode("classification")
@@ -89,5 +89,5 @@ xgMultiClassif <- function(gridNumber = 10,
     output$final <- final
   }
 
-  return(output)
+  return(final)
 }

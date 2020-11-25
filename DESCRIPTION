@@ -8,30 +8,31 @@ Authors@R:
            email = "AmandaParkDev@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Tidymodels is an incredibly useful framework to making end to end machine learning analyses. Since the process follows a preplanned framework, the process can be further streamlined to make analysis even simpler and easier to reproduce. 
+Depends: R 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat (>= 3.0.0),
+    ggplot2 (>= 3.3.2)
 Imports: 
-    rsample,
-    dplyr,
-    tidyr,
-    magrittr,
-    dials,
-    tune,
-    parsnip,
-    workflows,
-    yardstick,
-    recipes,
-    vip,
-    glmnet,
-    xgboost,
-    earth,
-    modeltime,
-    modeltime.ensemble,
-    ggplot2,
-    broom,
-    ranger
+    rsample (>= 0.0.8),
+    dplyr (>= 1.0.2),
+    tidyr (>= 1.1.2),
+    magrittr (>= 2.0.1),
+    dials (>= 0.0.9),
+    tune (>= 0.1.2),
+    parsnip(>= 0.1.4),
+    workflows (>= 0.2.1),
+    yardstick (>= 0.0.7),
+    recipes (>= 0.1.15),
+    vip (>= 0.2.2),
+    glmnet (>= 4.0-2),
+    xgboost (>= 1.2.0.1),
+    earth (>= 5.3.0),
+    modeltime (>= 0.4.0),
+    modeltime.ensemble (>= 0.3.0),
+    broom(>= 0.7.2),
+    ranger (>= 0.12.1)
