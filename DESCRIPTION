@@ -33,5 +33,7 @@ Imports:
     earth (>= 5.3.0),
     modeltime (>= 0.4.0),
     modeltime.ensemble (>= 0.3.0),
+    modeltime.resample(>= 0.1.0),
     broom(>= 0.7.2),
-    ranger (>= 0.12.1)
+    ranger (>= 0.12.1),
+    timetk (>= 2.6.0)

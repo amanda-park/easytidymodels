@@ -50,7 +50,7 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var6 = as.factor(c(rep(0, 20), rep(1, 40), rep(2, 40))))
 
 #Set response variable
-resp <- "var6"
+resp <- "var1"
 
 
 split <- trainTestSplit(data = df, 
@@ -120,23 +120,23 @@ Tunes the following:
 Fits a model based on the classification evaluation metric specified (default bal_accuracy), returns an evaluation of the model on both the training and testing data, and also returns variable importance for the model.
 
 ```{r xgboostClass}
-# #XGBoost classification
-# xgClass <- xgBinaryClassif(
-#                    recipe = rec,
-#                    response = resp,
-#                    folds = folds,
-#                    train = train_df,
-#                    test = test_df,
-#                    evalMetric = "roc_auc"
-#                    )
-# 
-# #All the same functions for logistic regression work here, but also others:
-# 
-# #Feature importance plot
-# xgClass$featImpPlot
-# 
-# #Feature importance variables
-# xgClass$featImpVars
+#XGBoost classification
+xgClass <- xgBinaryClassif(
+                   recipe = rec,
+                   response = resp,
+                   folds = folds,
+                   train = train_df,
+                   test = test_df,
+                   evalMetric = "roc_auc"
+                   )
+
+#All the same functions for logistic regression work here, but also others:
+
+#Feature importance plot
+xgClass$featImpPlot
+
+#Feature importance variables
+xgClass$featImpVars
 ```
 
 ## Multiclass Classification
@@ -231,53 +231,3 @@ Fits a model based on the classification evaluation metric specified (default ba
 # )
 ```
 
-## Time Series
-
-```{r timeSeries}
-
-# df$Date <- seq(as.Date("2020-01-01"), as.Date("2020-04-09"), by="days")
-# dts <- df %>% select(var2, Date) %>% set_names("Value", "Date")
-# 
-# resp <- "Value"
-# pred <- "Date"
-# 
-# split <- trainTestSplit(data = dts,
-#                            splitAmt = .8,
-#                            timeDependent = TRUE,
-#                            responseVar = resp,
-#                            stratifyOnResponse = FALSE)
-# 
-# #Remove data sets from list
-# tr <- split$train
-# ts <- split$test
-# 
-# #Run time series models
-# res <- modelTimeSeries(days = 21)
-# 
-# #See accuracy table for models, sorted by lowest MASE
-# res$accuracyTable
-#   
-# #Return interactive plotly cross validation plot
-# res$crossValPlot
-# 
-# #See forecast table (models ordered based on best MASE)
-# res$forecastTable
-# 
-# #Show forecast
-# res$forecastPlot
-# 
-# #Show actual values of forecast
-# res$forecastValues
-# 
-# #Show ensemble models
-# res$accuracyEnsembleTable
-# 
-# #Show ensemble cross-validation forecasts
-# res$ensembleCrossValPlot
-# 
-# #Show actual values of ensemble forecast
-# res$ensembleForecastValues
-# 
-# #Show forecast of ensemble models
-# res$ensembleForecastPlot
-```
