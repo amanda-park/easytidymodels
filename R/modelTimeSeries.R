@@ -28,7 +28,6 @@ modelTimeSeries <- function(train = tr,
   formulaBase <- stats::as.formula(paste(response, ".", sep="~"))
 
   #Recipe-free models
-
   arima_model <- modeltime::arima_reg() %>%
     parsnip::set_engine("auto_arima") %>%
     parsnip::fit(formulaBase, data = train)
@@ -57,14 +56,61 @@ modelTimeSeries <- function(train = tr,
     parsnip::set_engine("stlm_arima") %>%
     parsnip::fit(formulaBase, data = train)
 
-  forecast_table <- modeltime::modeltime_table(
-    arima_model,
-    prophet_model,
+  # forecast_table <- modeltime::modeltime_table(
+  #   arima_model,
+  #   prophet_model,
+  #   ets_model,
+  #   tbats_model,
+  #   nn_model,
+  #   stlm_ets_model,
+  #   stlm_arima_model
+  # )
+
+  #Models with recipes included
+  rec <- recipes::recipe(Value ~ Date, train) %>%
+    timetk::step_timeseries_signature(Date) %>%
+    recipes::step_rm(contains("am.pm"), contains("hour"), contains("minute"),
+                     contains("second"), contains("xts")) %>%
+    recipes::step_dummy(all_nominal()) %>%
+    recipes::prep()
+
+  #Elastic Net
+  glmnet_model <- parsnip::linear_reg(penalty = 0.01, mixture = 0.67) %>%
+    parsnip::set_engine("glmnet")
+
+  glmnet_model_workflow <- workflows::workflow() %>%
+    workflows::add_model(glmnet_model) %>%
+    workflows::add_recipe(rec %>% step_rm(Date)) %>%
+    parsnip::fit(train)
+
+  #Prophet with XGBoost Errors
+  # prophet_boost_model <- modeltime::prophet_boost(seasonality_daily = "auto",
+  #                                      trees = 100) %>%
+  #   parsnip::set_engine("prophet_xgboost")
+  #
+  # prophet_boost_model_workflow <- workflows::workflow() %>%
+  #   workflows::add_model(prophet_boost_model) %>%
+  #   workflows::add_recipe(rec) %>%
+  #   parsnip::fit(train)
+  #
+  # #Auto ARIMA with XGBoost Errors
+  # auto_arima_boost_model <- modeltime::arima_boost() %>%
+  #   parsnip::set_engine("auto_arima_xgboost")
+  #
+  # arima_boost_model_workflow <- workflows::workflow() %>%
+  #   workflows::add_model(auto_arima_boost_model) %>%
+  #   workflows::add_recipe(rec) %>%
+  #   parsnip::fit(train)
+
+  forecast_table <- modeltime_table(
+    #arima_model,
+    #prophet_model,
     ets_model,
     tbats_model,
     nn_model,
     stlm_ets_model,
-    stlm_arima_model
+    stlm_arima_model,
+    glmnet_model_workflow
   )
 
   acc <- forecast_table %>%

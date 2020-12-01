@@ -31,18 +31,20 @@ logRegBinary <- function(recipe = rec,
 
   grid <- dials::grid_regular(dials::parameters(mod), levels = 15)
 
-  final <- workflowFunc(mod = mod,
+  wflow <- workflowFunc(mod = mod,
                         formula = formula,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
                         type = "binary class")
 
-  output <- trainTestEvalClassif(final = final,
+  output <- trainTestEvalClassif(final = wflow$final,
                                  train = train,
                                  test = test,
                                  response = response,
                                  isLogReg = TRUE)
+
+  output$tune <- wflow$tune
 
 
   return(output)

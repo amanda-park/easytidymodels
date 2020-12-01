@@ -86,19 +86,19 @@ data.
 # #Shows training and testing data confusion matrix
 # lr$trainConfMat
 # lr$testConfMat
-# 
+#
 # #Shows training data confusion matrix plot
 # lr$trainConfMatPlot
 # lr$testConfMatPlot
-# 
+#
 # #Shows training data score based on classification metrics
 # lr$trainScore
 # lr$testScore
-# 
+#
 # #Shows actual predictions for training and testing
 # lr$trainPred
 # lr$testPred
-# 
+#
 # #Shows tuned model optimized on evaluation metric chosen
 # lr$final
 ```
@@ -123,7 +123,7 @@ training and testing data, and also returns variable importance for the
 model.
 
 ``` r
-# #XGBoost classification
+#XGBoost classification
 # xgClass <- xgBinaryClassif(
 #                    recipe = rec,
 #                    response = resp,
@@ -227,58 +227,33 @@ model.
 #   folds = folds,
 #   train = train_df,
 #   test = test_df,
-#   calcFeatImp = TRUE, 
+#   calcFeatImp = TRUE,
 #   evalMetric = "mae"
 # )
 ```
 
-## Time Series
+### Support Vector Machine
 
 ``` r
+# svmReg <- svmRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
+```
 
-# df$Date <- seq(as.Date("2020-01-01"), as.Date("2020-04-09"), by="days")
-# dts <- df %>% select(var2, Date) %>% set_names("Value", "Date")
-# 
-# resp <- "Value"
-# pred <- "Date"
-# 
-# split <- trainTestSplit(data = dts,
-#                            splitAmt = .8,
-#                            timeDependent = TRUE,
-#                            responseVar = resp,
-#                            stratifyOnResponse = FALSE)
-# 
-# #Remove data sets from list
-# tr <- split$train
-# ts <- split$test
-# 
-# #Run time series models
-# res <- modelTimeSeries(days = 21)
-# 
-# #See accuracy table for models, sorted by lowest MASE
-# res$accuracyTable
-#   
-# #Return interactive plotly cross validation plot
-# res$crossValPlot
-# 
-# #See forecast table (models ordered based on best MASE)
-# res$forecastTable
-# 
-# #Show forecast
-# res$forecastPlot
-# 
-# #Show actual values of forecast
-# res$forecastValues
-# 
-# #Show ensemble models
-# res$accuracyEnsembleTable
-# 
-# #Show ensemble cross-validation forecasts
-# res$ensembleCrossValPlot
-# 
-# #Show actual values of ensemble forecast
-# res$ensembleForecastValues
-# 
-# #Show forecast of ensemble models
-# res$ensembleForecastPlot
+## KNN Regression
+
+``` r
+# knnReg <- knnRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
 ```

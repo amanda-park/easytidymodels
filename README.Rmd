@@ -86,21 +86,23 @@ Tunes both the penalty and mixture terms, fits a model based on the classificati
 # #Shows training and testing data confusion matrix
 # lr$trainConfMat
 # lr$testConfMat
-# 
+#
 # #Shows training data confusion matrix plot
 # lr$trainConfMatPlot
 # lr$testConfMatPlot
-# 
+#
 # #Shows training data score based on classification metrics
 # lr$trainScore
 # lr$testScore
-# 
+#
 # #Shows actual predictions for training and testing
 # lr$trainPred
 # lr$testPred
-# 
+#
 # #Shows tuned model optimized on evaluation metric chosen
 # lr$final
+
+
 ```
 
 ### XGBoost
@@ -120,7 +122,7 @@ Tunes the following:
 Fits a model based on the classification evaluation metric specified (default bal_accuracy), returns an evaluation of the model on both the training and testing data, and also returns variable importance for the model.
 
 ```{r xgboostClass}
-# #XGBoost classification
+#XGBoost classification
 # xgClass <- xgBinaryClassif(
 #                    recipe = rec,
 #                    response = resp,
@@ -226,58 +228,34 @@ Fits a model based on the classification evaluation metric specified (default ba
 #   folds = folds,
 #   train = train_df,
 #   test = test_df,
-#   calcFeatImp = TRUE, 
+#   calcFeatImp = TRUE,
 #   evalMetric = "mae"
 # )
 ```
 
-## Time Series
+### Support Vector Machine
 
-```{r timeSeries}
+```{r svm}
+# svmReg <- svmRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
 
-# df$Date <- seq(as.Date("2020-01-01"), as.Date("2020-04-09"), by="days")
-# dts <- df %>% select(var2, Date) %>% set_names("Value", "Date")
-# 
-# resp <- "Value"
-# pred <- "Date"
-# 
-# split <- trainTestSplit(data = dts,
-#                            splitAmt = .8,
-#                            timeDependent = TRUE,
-#                            responseVar = resp,
-#                            stratifyOnResponse = FALSE)
-# 
-# #Remove data sets from list
-# tr <- split$train
-# ts <- split$test
-# 
-# #Run time series models
-# res <- modelTimeSeries(days = 21)
-# 
-# #See accuracy table for models, sorted by lowest MASE
-# res$accuracyTable
-#   
-# #Return interactive plotly cross validation plot
-# res$crossValPlot
-# 
-# #See forecast table (models ordered based on best MASE)
-# res$forecastTable
-# 
-# #Show forecast
-# res$forecastPlot
-# 
-# #Show actual values of forecast
-# res$forecastValues
-# 
-# #Show ensemble models
-# res$accuracyEnsembleTable
-# 
-# #Show ensemble cross-validation forecasts
-# res$ensembleCrossValPlot
-# 
-# #Show actual values of ensemble forecast
-# res$ensembleForecastValues
-# 
-# #Show forecast of ensemble models
-# res$ensembleForecastPlot
+```
+
+## KNN Regression
+
+```{r knn}
+# knnReg <- knnRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
 ```
