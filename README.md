@@ -245,7 +245,7 @@ model.
 # )
 ```
 
-## KNN Regression
+### KNN Regression
 
 ``` r
 # knnReg <- knnRegress(
@@ -256,4 +256,57 @@ model.
 #   test = test_df,
 #   evalMetric = "rmse"
 # )
+```
+
+## Time Series
+
+``` r
+# df$Date <- seq(as.Date("2020-01-01"), as.Date("2020-04-09"), by="days")
+# dts <- df %>% select(var2, Date) %>% set_names("Value", "Date")
+# 
+# resp <- "Value"
+# pred <- "Date"
+# 
+# split <- trainTestSplit(data = dts,
+#                            splitAmt = .8,
+#                            timeDependent = TRUE,
+#                            responseVar = resp,
+#                            stratifyOnResponse = FALSE)
+# 
+# #Remove data sets from list
+# tr <- split$train
+# ts <- split$test
+# 
+# #EDA for time series object
+# eda <- initialTimeSeriesEval()
+# 
+# #Run time series models
+# res <- modelTimeSeries(days = 21)
+
+#See accuracy table for models, sorted by lowest MASE
+# res$accuracyTable
+# 
+# #Return interactive plotly cross validation plot
+# res$crossValPlot
+# 
+# #See forecast table (models ordered based on best MASE)
+# res$forecastTable
+# 
+# #Show forecast
+# res$forecastPlot
+# 
+# #Show actual values of forecast
+# res$forecastValues
+# 
+# #Show ensemble models
+# res$accuracyEnsembleTable
+# 
+# #Show ensemble cross-validation forecasts
+# res$ensembleCrossValPlot
+# 
+# #Show actual values of ensemble forecast
+# res$ensembleForecastValues
+# 
+# #Show forecast of ensemble models
+# res$ensembleForecastPlot
 ```

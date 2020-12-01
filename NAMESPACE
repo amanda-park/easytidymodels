@@ -2,6 +2,7 @@
 
 export(createRecipe)
 export(cvFolds)
+export(initialTimeSeriesEval)
 export(knnRegress)
 export(linearRegress)
 export(logRegBinary)

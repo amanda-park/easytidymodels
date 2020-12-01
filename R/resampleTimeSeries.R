@@ -16,7 +16,7 @@ resampleTimeSeries <- function(df = dts,
                                table = output$forecastTable,
                                sliceLimit = 5) {
   resamples <- modeltime.resample::time_series_cv(
-    data        = data,
+    data        = df,
     assess      = floor(nrow(data) / 10),
     initial     = floor(nrow(data) / 4),
     skip        = floor(nrow(data) / 10),
