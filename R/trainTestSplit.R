@@ -41,7 +41,8 @@ trainTestSplit <- function(data = df,
 
   output <- list("train" = datTrain,
               "test" = datTest,
-              "boot" = datBoot)
+              "boot" = datBoot,
+              "split" = split)
 
   return(output)
 }

@@ -50,7 +50,7 @@ df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
                  var6 = as.factor(c(rep(0, 20), rep(1, 40), rep(2, 40))))
 
 #Set response variable
-resp <- "var1"
+resp <- "var6"
 
 
 split <- trainTestSplit(data = df, 
@@ -86,21 +86,23 @@ Tunes both the penalty and mixture terms, fits a model based on the classificati
 # #Shows training and testing data confusion matrix
 # lr$trainConfMat
 # lr$testConfMat
-# 
+#
 # #Shows training data confusion matrix plot
 # lr$trainConfMatPlot
 # lr$testConfMatPlot
-# 
+#
 # #Shows training data score based on classification metrics
 # lr$trainScore
 # lr$testScore
-# 
+#
 # #Shows actual predictions for training and testing
 # lr$trainPred
 # lr$testPred
-# 
+#
 # #Shows tuned model optimized on evaluation metric chosen
 # lr$final
+
+
 ```
 
 ### XGBoost
@@ -121,22 +123,22 @@ Fits a model based on the classification evaluation metric specified (default ba
 
 ```{r xgboostClass}
 #XGBoost classification
-xgClass <- xgBinaryClassif(
-                   recipe = rec,
-                   response = resp,
-                   folds = folds,
-                   train = train_df,
-                   test = test_df,
-                   evalMetric = "roc_auc"
-                   )
-
-#All the same functions for logistic regression work here, but also others:
-
-#Feature importance plot
-xgClass$featImpPlot
-
-#Feature importance variables
-xgClass$featImpVars
+# xgClass <- xgBinaryClassif(
+#                    recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df,
+#                    evalMetric = "roc_auc"
+#                    )
+# 
+# #All the same functions for logistic regression work here, but also others:
+# 
+# #Feature importance plot
+# xgClass$featImpPlot
+# 
+# #Feature importance variables
+# xgClass$featImpVars
 ```
 
 ## Multiclass Classification
@@ -226,8 +228,34 @@ xgClass$featImpVars
 #   folds = folds,
 #   train = train_df,
 #   test = test_df,
-#   calcFeatImp = TRUE, 
+#   calcFeatImp = TRUE,
 #   evalMetric = "mae"
 # )
 ```
 
+### Support Vector Machine
+
+```{r svm}
+# svmReg <- svmRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
+
+```
+
+## KNN Regression
+
+```{r knn}
+# knnReg <- knnRegress(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "rmse"
+# )
+```

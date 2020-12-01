@@ -1,6 +1,6 @@
-#' MARS
+#' Support Vector Machine
 #'
-#' Fits a MARS regression model.
+#' Fits a radial basis Support Vector Machine Regression.
 #'
 #' @param response The variable that is the response for analysis.
 #' @param recipe A recipe object.
@@ -16,28 +16,28 @@
 #' @examples
 #' @importFrom magrittr "%>%"
 
-marsRegress <- function(response = response,
-                        recipe = rec,
-                        folds = folds,
-                        train = train_df,
-                        test = test_df,
-                        gridNumber = 10,
-                        evalMetric = "rmse")
-{
-
-  mod <- parsnip::mars(num_terms = tune(),
-              prod_degree = tune()) %>%
-    parsnip::set_engine("earth") %>%
-    parsnip::set_mode("regression")
+svmRegress <- function(response = response,
+                       recipe = rec,
+                       folds = folds,
+                       train = train_df,
+                       test = test_df,
+                       gridNumber = 10,
+                       evalMetric = "rmse") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
+  mod <- parsnip::svm_rbf(
+    cost = tune::tune(),
+    rbf_sigma = tune::tune()
+  ) %>%
+    set_engine("kernlab") %>%
+    set_mode("regression")
+
   params <- dials::parameters(
-    dials::finalize(dials::num_terms(), dplyr::select(train, -matches(response))),
-    dials::prod_degree()
+    dials::cost(),
+    dials::rbf_sigma()
   )
 
-  #Set grid
   grid <- dials::grid_max_entropy(params, size = gridNumber)
 
   wflow <- workflowFunc(mod = mod,

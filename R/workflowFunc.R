@@ -20,7 +20,14 @@ workflowFunc <- function(mod = mod,
         metrics = yardstick::metric_set(
           yardstick::rmse,
           yardstick::rsq,
-          yardstick::mae)
+          yardstick::mae,
+          yardstick::mase,
+          yardstick::ccc,
+          yardstick::iic,
+          yardstick::huber_loss),
+        control = tune::control_grid(verbose = TRUE,
+                           save_pred = TRUE,
+                           save_workflow = TRUE)
       )
   }
 
@@ -33,9 +40,14 @@ workflowFunc <- function(mod = mod,
         yardstick::bal_accuracy,
         yardstick::kap,
         yardstick::roc_auc,
-        yardstick::mcc),
-      #https://yardstick.tidymodels.org/articles/metric-types.html
-      control   = tune::control_grid(verbose = TRUE)
+        yardstick::mcc,
+        yardstick::precision,
+        yardstick::recall,
+        yardstick::sens,
+        yardstick::spec),
+      control   = tune::control_grid(verbose = TRUE,
+                                     save_pred = TRUE,
+                                     save_workflow = TRUE)
     )
 
 
@@ -50,8 +62,14 @@ workflowFunc <- function(mod = mod,
         yardstick::mn_log_loss,
         yardstick::kap,
         yardstick::roc_auc,
-        yardstick::bal_accuracy),
-      control   = tune::control_grid(verbose = TRUE)
+        yardstick::bal_accuracy,
+        yardstick::precision,
+        yardstick::recall,
+        yardstick::sens,
+        yardstick::spec),
+      control   = tune::control_grid(verbose = TRUE,
+                                     save_pred = TRUE,
+                                     save_workflow = TRUE)
     )
   }
 
@@ -65,5 +83,5 @@ workflowFunc <- function(mod = mod,
   output <- list("tune" = tune,
                  "final" = final)
 
-  return(final)
+  return(output)
 }

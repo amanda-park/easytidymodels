@@ -48,21 +48,23 @@ rfRegress <- function(gridNumber = 10,
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)
 
-  final <- workflowFunc(mod = mod,
+  wflow <- workflowFunc(mod = mod,
                         formula = formula,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
                         type = "regress")
 
-  output <- trainTestEvalRegress(final = final,
+  output <- trainTestEvalRegress(final = wflow$final,
                                  train = train,
                                  test = test,
                                  response = response)
 
+  output$tune <- wflow$tune
+
   if(calcFeatImp == TRUE) {
 
-    featImp <- featImpCalc(final = final,
+    featImp <- featImpCalc(final = wflow$final,
                            train = train,
                            response = response,
                            evalMetric = evalMetric)

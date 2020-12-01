@@ -21,8 +21,8 @@
 xgRegress <- function(gridNumber = 10,
                       recipe = rec,
                       folds = cvFolds,
-                      train = datTrain,
-                      test = datTest,
+                      train = train_df,
+                      test = test_df,
                       response = response,
                       treeNum = 100,
                       calcFeatImp = TRUE,
@@ -64,21 +64,21 @@ xgRegress <- function(gridNumber = 10,
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)
 
-  final <- workflowFunc(mod = mod,
+  wflow <- workflowFunc(mod = mod,
                         formula = formula,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
                         type = "regress")
 
-  output <- trainTestEvalRegress(final = final,
+  output <- trainTestEvalRegress(final = wflow$final,
                                  train = train,
                                  test = test,
                                  response = response)
 
   if(calcFeatImp == TRUE) {
 
-    featImp <- featImpCalc(final = final,
+    featImp <- featImpCalc(final = wflow$final,
                            train = train,
                            response = response,
                            evalMetric = evalMetric)

@@ -73,17 +73,19 @@ linearRegress <- function(response = response,
       mixture = c(0.05, 0.2, 0.4, 0.6, 0.8, 1)
     )
 
-    final <- workflowFunc(mod = mod,
+    wflow <- workflowFunc(mod = mod,
                           formula = formula,
                           folds = folds,
                           grid = grid,
                           evalMetric = evalMetric,
                           type = "regress")
 
-    output <- trainTestEvalRegress(final = final,
+    output <- trainTestEvalRegress(final = wflow$final,
                                    train = train,
                                    test = test,
                                    response = response)
+
+    output$tune <- wflow$tune
   }
 
   return(output)
