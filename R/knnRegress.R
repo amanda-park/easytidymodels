@@ -1,4 +1,4 @@
-#' MARS
+#' KNN Regression
 #'
 #' Fits a K-Nearest Neighbors Regression Model.
 #'
@@ -21,19 +21,23 @@ knnRegress <- function(response = response,
                        folds = folds,
                        train = train_df,
                        test = test_df,
-                       gridNumber = 10,
+                       gridNumber = 15,
                        evalMetric = "rmse") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
   mod <- parsnip::nearest_neighbor(
     mode = "regression",
-    neighbors = tune::tune()
+    neighbors = tune::tune(),
+    weight_func = tune::tune(),
+    dist_power = tune::tune()
   ) %>%
     parsnip::set_engine("kknn")
 
   params <- dials::parameters(
-    dials::neighbors()
+    dials::neighbors(),
+    dials::weight_func(),
+    dials::dist_power()
   )
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)

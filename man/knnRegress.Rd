@@ -2,7 +2,7 @@
 % Please edit documentation in R/knnRegress.R
 \name{knnRegress}
 \alias{knnRegress}
-\title{MARS}
+\title{KNN Regression}
 \usage{
 knnRegress(
   response = response,
@@ -10,7 +10,7 @@ knnRegress(
   folds = folds,
   train = train_df,
   test = test_df,
-  gridNumber = 10,
+  gridNumber = 15,
   evalMetric = "rmse"
 )
 }

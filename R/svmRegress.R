@@ -21,21 +21,23 @@ svmRegress <- function(response = response,
                        folds = folds,
                        train = train_df,
                        test = test_df,
-                       gridNumber = 10,
+                       gridNumber = 15,
                        evalMetric = "rmse") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
   mod <- parsnip::svm_rbf(
     cost = tune::tune(),
-    rbf_sigma = tune::tune()
+    rbf_sigma = tune::tune(),
+    margin = tune::tune()
   ) %>%
     set_engine("kernlab") %>%
     set_mode("regression")
 
   params <- dials::parameters(
     dials::cost(),
-    dials::rbf_sigma()
+    dials::rbf_sigma(),
+    dials::svm_margin()
   )
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)

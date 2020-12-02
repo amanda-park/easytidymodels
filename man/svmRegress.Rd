@@ -10,7 +10,7 @@ svmRegress(
   folds = folds,
   train = train_df,
   test = test_df,
-  gridNumber = 10,
+  gridNumber = 15,
   evalMetric = "rmse"
 )
 }
