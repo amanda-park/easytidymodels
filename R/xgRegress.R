@@ -76,6 +76,8 @@ xgRegress <- function(gridNumber = 10,
                                  test = test,
                                  response = response)
 
+  output$tune <- wflow$tune
+
   if(calcFeatImp == TRUE) {
 
     featImp <- featImpCalc(final = wflow$final,

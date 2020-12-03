@@ -105,6 +105,35 @@ Tunes both the penalty and mixture terms, fits a model based on the classificati
 
 ```
 
+### KNN Classification
+
+```{r knnClass}
+# knnClass <- knnClassif(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "bal_accuracy"
+# )
+
+```
+
+### SVM Classification
+
+```{r svmClass}
+# svmClass <- svmClassif(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "bal_accuracy"
+# )
+
+```
+
+
 ### XGBoost
 
 Tunes the following:

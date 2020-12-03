@@ -27,7 +27,8 @@ workflowFunc <- function(mod = mod,
           yardstick::huber_loss),
         control = tune::control_grid(verbose = TRUE,
                            save_pred = TRUE,
-                           save_workflow = TRUE)
+                           save_workflow = TRUE,
+                           allow_par = TRUE, parallel_over = "everything")
       )
   }
 
@@ -38,6 +39,7 @@ workflowFunc <- function(mod = mod,
       grid      = grid,
       metrics   = yardstick::metric_set(
         yardstick::bal_accuracy,
+        yardstick::mn_log_loss,
         yardstick::kap,
         yardstick::roc_auc,
         yardstick::mcc,
@@ -47,7 +49,8 @@ workflowFunc <- function(mod = mod,
         yardstick::spec),
       control   = tune::control_grid(verbose = TRUE,
                                      save_pred = TRUE,
-                                     save_workflow = TRUE)
+                                     save_workflow = TRUE,
+                                     allow_par = TRUE, parallel_over = "everything")
     )
 
 
@@ -62,6 +65,7 @@ workflowFunc <- function(mod = mod,
         yardstick::mn_log_loss,
         yardstick::kap,
         yardstick::roc_auc,
+        yardstick::mcc,
         yardstick::bal_accuracy,
         yardstick::precision,
         yardstick::recall,
@@ -69,7 +73,8 @@ workflowFunc <- function(mod = mod,
         yardstick::spec),
       control   = tune::control_grid(verbose = TRUE,
                                      save_pred = TRUE,
-                                     save_workflow = TRUE)
+                                     save_workflow = TRUE,
+                                     allow_par = TRUE, parallel_over = "everything")
     )
   }
 

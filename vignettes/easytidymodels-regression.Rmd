@@ -1,0 +1,445 @@
+---
+title: "easytidymodels Regression Example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{easytidymodels Regression Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Set up package and load in data for analysis
+
+Generally, you want to set a seed so that your analysis is reproducible.
+
+If easytidymodels isn't installed you can install it through devtools, which is on Github.
+
+If you want to use the dataset provided here you will need to install modeldata.
+
+Parallel computing is used through the doParallel library to speed up computations.
+
+```{r setup, eval = FALSE}
+set.seed(24)
+
+# install.packages("devtools")
+# devtools::install_github("amanda-park/easytidymodels")
+library(easytidymodels)
+library(recipes)
+library(doParallel)
+
+data(ames, package = "modeldata")
+
+#Use parallel compute to speed up processing time
+cores <- parallel::detectCores(logical = FALSE)
+registerDoParallel(cores = cores)
+
+```
+
+## Prepare data for analysis with preprocessing
+
+Define your response variable and save it as resp.
+
+trainTestSplit is a wrapper for rsample's function to split your training and testing data. There is the option to split based on time dependency and to stratify on the response if you aren't splitting based on time.
+
+recipes are your model's preprocessing steps. This varies for each data set you work with the level of preprocessing you need, so instead this portion of tidymodels has not been given a wrapper. The available preprocessing steps that you can use in recipes can be seen [here](https://recipes.tidymodels.org/reference/index.html).
+
+After your recipe is set up, you can split your data into training and testing and then bake your recipe's preprocessing steps into the model.
+
+Lastly, you can set up a cross-validation fold object through the function cvFolds.
+
+These objects are all necessary for fitting the variety of models that tidymodels offers you.
+
+```{r eval = FALSE}
+#Define your response variable and formula object here
+resp <- "Sale_Price"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Split data into training and testing sets
+split <- trainTestSplit(ames,
+                        stratifyOnResponse = TRUE,
+                        responseVar = resp)
+
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, data = split$train) %>%
+  step_log(resp, base = 10) %>%
+  step_YeoJohnson(Lot_Area, Gr_Liv_Area) %>%
+  step_other(Neighborhood, threshold = .1)  %>%
+  step_dummy(all_nominal()) %>%
+  step_zv(all_predictors()) %>%
+  step_nzv(all_predictors()) %>%
+  step_corr(all_numeric(), -all_outcomes(), threshold = .8) %>%
+  prep()
+
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+
+folds <- cvFolds(train_df)
+```
+
+# About all regression models
+
+General workflow they all follow:
+
+* Fit the model specified to training data
+* Create a workflow and tune hyperparameters
+* Choose optimal model based on evaluation metric chosen
+* Evaluate model performance on training and testing data
+
+Available evaluation metrics for evalMetric:
+
+* [RMSE](https://yardstick.tidymodels.org/reference/rmse.html) (Root Mean Squared Error, call "rmse")
+* [MAE](https://yardstick.tidymodels.org/reference/mae.html) (Mean Absolute Error, call "mae")
+* [RSQ](https://yardstick.tidymodels.org/reference/rsq.html) (R-Squared, call "rsq")
+* [MASE](https://yardstick.tidymodels.org/reference/mase.html) (Mean Absolute Scaled Error, call "mase")
+* [CCC](https://yardstick.tidymodels.org/reference/ccc.html) (Concordance Correlation Coefficient, call "ccc")
+* [IIC](https://yardstick.tidymodels.org/reference/iic.html) (Index of Ideality of Correlation, call "iic")
+* [HUBER_LOSS](https://yardstick.tidymodels.org/reference/huber_loss.html) (Huber loss, call "huber_loss")
+
+## Fit a KNN Model
+
+Uses ``library(kknn)`` to compute model.
+
+This is what the KNN model tunes:
+
+* **neighbors**: The number of neighbors considered at each prediction.
+* **weight_func**: The type of kernel function that weights the distances between samples.
+* **dist_power**: The parameter used when calculating the Minkowski distance. This corresponds to the Manhattan distance with dist_power = 1 and the Euclidean distance with dist_power = 2.
+
+```{r knn, eval = FALSE}
+knnReg <- knnRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  evalMetric = "rmse"
+)
+
+#Visualize training data and its predictions
+knnReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+knnReg$trainScore
+
+#Visualize testing data and its predictions
+knnReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+knnReg$testScore
+
+#See the final model chosen by KNN based on optimizing for your chosen evaluation metric
+knnReg$final
+
+#See how model fit looks based on another evaluation metric
+knnReg$tune %>% tune::show_best("mae")
+```
+
+## Fit a Support Vector Machine (Radial Basis Kernel) Model
+
+Uses ``library(kernlab)`` to compute SVM model.
+
+What the model tunes:
+
+* **cost**: The cost of predicting a sample within or on the wrong side of the margin.
+* **rbf_sigma**: The precision parameter for the radial basis function.
+* **margin**: The epsilon in the SVM insensitive loss function (regression only)
+
+All the same evaluation methods for KNN are also available for SVM.
+
+```{r eval = FALSE}
+svmReg <- svmRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  evalMetric = "rmse"
+)
+
+#Visualize training data and its predictions
+svmReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+svmReg$trainScore
+
+#Visualize testing data and its predictions
+svmReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+svmReg$testScore
+
+#See the final model chosen by svm based on optimizing for your chosen evaluation metric
+svmReg$final
+
+#See how model fit looks based on another evaluation metric
+svmReg$tune %>% tune::show_best("mae")
+```
+
+## Fit a Tuned Linear Regression Model
+
+Uses ``library(glmnet)`` to compute tuned linear regression model.
+
+What the model tunes:
+
+* **penalty**: The total amount of regularization in the model. Also known as lambda.
+* **mixture**: The mixture amounts of different types of regularization (see below). If 1, amounts to LASSO regression. If 0, amounts to Ridge Regression. Also known as alpha.
+
+
+```{r eval = FALSE}
+linearReg <- linearRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  evalMetric = "rmse",
+  tidyModelVersion = TRUE
+)
+
+#Visualize training data and its predictions
+linearReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+linearReg$trainScore
+
+#Visualize testing data and its predictions
+linearReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+linearReg$testScore
+
+#See the final model chosen by linear based on optimizing for your chosen evaluation metric
+linearReg$final
+
+#See how model fit looks based on another evaluation metric
+linearReg$tune %>% tune::show_best("mae")
+```
+
+## Fit a Random Forest Model
+
+Uses ``library(ranger)`` to compute a random forest regression model.
+
+What the model tunes:
+
+* **mtry**: The number of predictors that will be randomly sampled at each split when creating the tree models.
+* **min_n**: The minimum number of data points in a node that are required for the node to be split further.
+
+What you set specifically:
+
+* **trees**: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+
+```{r eval = FALSE}
+rfReg <- rfRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  calcFeatImp = TRUE,
+  evalMetric = "mae"
+)
+
+#Visualize training data and its predictions
+rfReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+rfReg$trainScore
+
+#Visualize testing data and its predictions
+rfReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+rfReg$testScore
+
+#See the final model chosen by rf based on optimizing for your chosen evaluation metric
+rfReg$final
+
+#See how model fit looks based on another evaluation metric
+rfReg$tune %>% tune::show_best("mae")
+
+#See feature importance of model
+rfReg$featImpPlot
+
+#See numeric feature importance of model
+rfReg$featImpVars
+```
+
+## Fit an XGBoost Model
+
+Uses ``library(xgboost)`` to compute a random forest regression model.
+
+What the model tunes:
+
+* **mtry**: The number of predictors that will be randomly sampled at each split when creating the tree models.
+* **min_n**: The minimum number of data points in a node that are required for the node to be split further.
+* **tree_depth**: The maximum depth of the tree (i.e. number of splits).
+* **learn_rate**: The rate at which the boosting algorithm adapts from iteration-to-iteration.
+* **loss_reduction**: The reduction in the loss function required to split further.
+* **sample_size**: The amount of data exposed to the fitting routine.
+
+What you set specifically:
+
+* **trees**: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+
+```{r eval = FALSE}
+xgReg <- xgRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  calcFeatImp = TRUE,
+  evalMetric = "mae"
+)
+
+#Visualize training data and its predictions
+xgReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+xgReg$trainScore
+
+#Visualize testing data and its predictions
+xgReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+xgReg$testScore
+
+#See the final model chosen by xg based on optimizing for your chosen evaluation metric
+xgReg$final
+
+#See how model fit looks based on another evaluation metric
+xgReg$tune %>% tune::select_best("rmse")
+
+#See feature importance of model
+xgReg$featImpPlot
+```
+
+## Fit a MARS Model
+
+Uses ``library(earth)`` to compute a multi-adaptive regressive spline model.
+
+What the model tunes:
+
+* **num_terms**: The number of features that will be retained in the final model.
+* **prod_degree**: The highest possible degree of interaction between features. A value of 1 indicates an additive model while a value of 2 allows, but does not guarantee, two-way interactions between features.
+* **prune_method**: The type of pruning. Possible values are listed in ?earth.
+
+```{r eval = FALSE}
+marsReg <- marsRegress(
+  recipe = rec,
+  response = resp,
+  folds = folds,
+  train = train_df,
+  test = test_df,
+  evalMetric = "rmse"
+)
+
+#Visualize training data and its predictions
+marsReg$trainPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+marsReg$trainScore
+
+#Visualize testing data and its predictions
+marsReg$testPred %>% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+marsReg$testScore
+
+#See the final model chosen by mars based on optimizing for your chosen evaluation metric
+marsReg$final
+
+#See how model fit looks based on another evaluation metric
+marsReg$tune %>% tune::show_best("mae")
+```
+
+## Model Stacking Example
+
+```{r eval = FALSE}
+# Finalize parameters 
+
+rfParam <- rfReg$tune %>% show_best("rmse", n=1) %>% 
+  select(mtry, min_n)
+
+xgParam <- xgReg$tune %>% 
+  show_best("rmse", n=1) %>% 
+  select(mtry:sample_size)
+
+# Collect model predictions to stack
+
+xgStack <- xgReg$tune %>% 
+  collect_predictions() %>% 
+  inner_join(xgParam) %>% 
+  select(id, .row, !!resp, xgboost = .pred)
+
+rfStack <- rfReg$tune %>% 
+  collect_predictions() %>% 
+  inner_join(rfParam) %>% 
+  select(id, .row, randomforest = .pred)
+
+marsStack <- marsReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, mars = .pred)
+
+knnStack <- knnReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, knn = .pred)
+
+svmStack <- svmReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, svm = .pred)
+
+lmStack <- linearReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, lm = .pred)
+
+stackDat <- xgStack %>% 
+  left_join(rfStack) %>% 
+  left_join(marsStack) %>%
+  left_join(knnStack) %>%
+  left_join(svmStack) %>%
+  left_join(lmStack) %>%
+  select(-id, -.row)
+
+stackModel <- linear_reg(penalty = .2, mixture = 1) %>% 
+  set_mode("regression") %>% 
+  set_engine("glmnet") %>% 
+  fit(formula, data = stackDat)
+
+stackModel %>% tidy()
+
+#Finalize model fits
+
+xgFinal <- xgReg$final %>% last_fit(split$split)
+rfFinal <- rfReg$final %>% last_fit(split$split)
+marsFinal <- marsReg$final %>% last_fit(split$split)
+knnFinal <- knnReg$final %>% last_fit(split$split)
+svmFinal <- svmReg$final %>% last_fit(split$split)
+lmFinal <- linearReg$final %>% last_fit(split$split)
+
+stackFinal <- tibble("model" = list(xgFinal, rfFinal, marsFinal, knnFinal, svmFinal, lmFinal),
+                         "model_names" = c("xgboost", "randomforest", "mars", "knn", "svm", "lm")) %>% 
+  mutate(pred = map(model, collect_predictions))
+
+stackFinal <- stackFinal %>% 
+  select(model_names, pred) %>% 
+  unnest(pred) %>% 
+  pivot_wider(names_from = model_names, values_from = .pred) %>% 
+  select(-id, -.row, -.config)
+
+predict(stackModel, stackFinal) %>% 
+  bind_cols(stackFinal) %>% 
+  rename("stack" = .pred) %>% 
+  pivot_longer(-!!resp) %>% 
+  group_by(name) %>% 
+  rmse(truth = !!resp, estimate = value) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = .metric, values_from = .estimate) %>% 
+  arrange(rmse)
+```
