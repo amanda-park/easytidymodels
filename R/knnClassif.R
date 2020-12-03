@@ -1,6 +1,6 @@
-#' Support Vector Machine Regression
+#' KNN Classification
 #'
-#' Fits a radial basis Support Vector Machine Regression.
+#' Fits a K-Nearest Neighbors Classification Model.
 #'
 #' @param response The variable that is the response for analysis.
 #' @param recipe A recipe object.
@@ -8,7 +8,7 @@
 #' @param train The training data set.
 #' @param test The testing data set.
 #' @param gridNumber The size of the grid to tune on.
-#' @param evalMetric The regression metric you want to evaluate the model's accuracy on.
+#' @param evalMetric The classification metric you want to evaluate the model's accuracy on.
 #'
 #' @return
 #' @export
@@ -16,28 +16,28 @@
 #' @examples
 #' @importFrom magrittr "%>%"
 
-svmRegress <- function(response = response,
+knnClassif <- function(response = response,
                        recipe = rec,
                        folds = folds,
                        train = train_df,
                        test = test_df,
                        gridNumber = 15,
-                       evalMetric = "rmse") {
+                       evalMetric = "bal_accuracy") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
-  mod <- parsnip::svm_rbf(
-    cost = tune::tune(),
-    rbf_sigma = tune::tune(),
-    margin = tune::tune()
+  mod <- parsnip::nearest_neighbor(
+    mode = "classification",
+    neighbors = tune::tune(),
+    weight_func = tune::tune(),
+    dist_power = tune::tune()
   ) %>%
-    set_engine("kernlab") %>%
-    set_mode("regression")
+    parsnip::set_engine("kknn")
 
   params <- dials::parameters(
-    dials::cost(),
-    dials::rbf_sigma(),
-    dials::svm_margin()
+    dials::neighbors(),
+    dials::weight_func(),
+    dials::dist_power()
   )
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)
@@ -47,9 +47,9 @@ svmRegress <- function(response = response,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
-                        type = "regress")
+                        type = "binary class")
 
-  output <- trainTestEvalRegress(final = wflow$final,
+  output <- trainTestEvalClassif(final = wflow$final,
                                  train = train,
                                  test = test,
                                  response = response)

@@ -358,3 +358,88 @@ marsReg$final
 #See how model fit looks based on another evaluation metric
 marsReg$tune %>% tune::show_best("mae")
 ```
+
+## Model Stacking Example
+
+```{r eval = FALSE}
+# Finalize parameters 
+
+rfParam <- rfReg$tune %>% show_best("rmse", n=1) %>% 
+  select(mtry, min_n)
+
+xgParam <- xgReg$tune %>% 
+  show_best("rmse", n=1) %>% 
+  select(mtry:sample_size)
+
+# Collect model predictions to stack
+
+xgStack <- xgReg$tune %>% 
+  collect_predictions() %>% 
+  inner_join(xgParam) %>% 
+  select(id, .row, !!resp, xgboost = .pred)
+
+rfStack <- rfReg$tune %>% 
+  collect_predictions() %>% 
+  inner_join(rfParam) %>% 
+  select(id, .row, randomforest = .pred)
+
+marsStack <- marsReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, mars = .pred)
+
+knnStack <- knnReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, knn = .pred)
+
+svmStack <- svmReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, svm = .pred)
+
+lmStack <- linearReg$tune %>%
+  collect_predictions() %>% 
+  select(id, .row, lm = .pred)
+
+stackDat <- xgStack %>% 
+  left_join(rfStack) %>% 
+  left_join(marsStack) %>%
+  left_join(knnStack) %>%
+  left_join(svmStack) %>%
+  left_join(lmStack) %>%
+  select(-id, -.row)
+
+stackModel <- linear_reg(penalty = .2, mixture = 1) %>% 
+  set_mode("regression") %>% 
+  set_engine("glmnet") %>% 
+  fit(formula, data = stackDat)
+
+stackModel %>% tidy()
+
+#Finalize model fits
+
+xgFinal <- xgReg$final %>% last_fit(split$split)
+rfFinal <- rfReg$final %>% last_fit(split$split)
+marsFinal <- marsReg$final %>% last_fit(split$split)
+knnFinal <- knnReg$final %>% last_fit(split$split)
+svmFinal <- svmReg$final %>% last_fit(split$split)
+lmFinal <- linearReg$final %>% last_fit(split$split)
+
+stackFinal <- tibble("model" = list(xgFinal, rfFinal, marsFinal, knnFinal, svmFinal, lmFinal),
+                         "model_names" = c("xgboost", "randomforest", "mars", "knn", "svm", "lm")) %>% 
+  mutate(pred = map(model, collect_predictions))
+
+stackFinal <- stackFinal %>% 
+  select(model_names, pred) %>% 
+  unnest(pred) %>% 
+  pivot_wider(names_from = model_names, values_from = .pred) %>% 
+  select(-id, -.row, -.config)
+
+predict(stackModel, stackFinal) %>% 
+  bind_cols(stackFinal) %>% 
+  rename("stack" = .pred) %>% 
+  pivot_longer(-!!resp) %>% 
+  group_by(name) %>% 
+  rmse(truth = !!resp, estimate = value) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = .metric, values_from = .estimate) %>% 
+  arrange(rmse)
+```

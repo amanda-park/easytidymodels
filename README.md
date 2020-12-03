@@ -103,6 +103,32 @@ data.
 # lr$final
 ```
 
+### KNN Classification
+
+``` r
+# knnClass <- knnClassif(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "bal_accuracy"
+# )
+```
+
+### SVM Classification
+
+``` r
+# svmClass <- svmClassif(
+#   recipe = rec,
+#   response = resp,
+#   folds = folds,
+#   train = train_df,
+#   test = test_df,
+#   evalMetric = "bal_accuracy"
+# )
+```
+
 ### XGBoost
 
 Tunes the following:

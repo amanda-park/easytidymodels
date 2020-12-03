@@ -1,6 +1,6 @@
-#' Support Vector Machine Regression
+#' Support Vector Machine Classification
 #'
-#' Fits a radial basis Support Vector Machine Regression.
+#' Fits a radial basis Support Vector Machine Classification Model.
 #'
 #' @param response The variable that is the response for analysis.
 #' @param recipe A recipe object.
@@ -16,28 +16,26 @@
 #' @examples
 #' @importFrom magrittr "%>%"
 
-svmRegress <- function(response = response,
+svmClassif <- function(response = response,
                        recipe = rec,
                        folds = folds,
                        train = train_df,
                        test = test_df,
                        gridNumber = 15,
-                       evalMetric = "rmse") {
+                       evalMetric = "bal_accuracy") {
 
   formula <- stats::as.formula(paste(response, ".", sep="~"))
 
   mod <- parsnip::svm_rbf(
     cost = tune::tune(),
-    rbf_sigma = tune::tune(),
-    margin = tune::tune()
+    rbf_sigma = tune::tune()
   ) %>%
     set_engine("kernlab") %>%
-    set_mode("regression")
+    set_mode("classification")
 
   params <- dials::parameters(
     dials::cost(),
-    dials::rbf_sigma(),
-    dials::svm_margin()
+    dials::rbf_sigma()
   )
 
   grid <- dials::grid_max_entropy(params, size = gridNumber)
@@ -47,9 +45,9 @@ svmRegress <- function(response = response,
                         folds = folds,
                         grid = grid,
                         evalMetric = evalMetric,
-                        type = "regress")
+                        type = "binary class")
 
-  output <- trainTestEvalRegress(final = wflow$final,
+  output <- trainTestEvalClassif(final = wflow$final,
                                  train = train,
                                  test = test,
                                  response = response)
