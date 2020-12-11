@@ -7,10 +7,20 @@
 #' @param stratifyOnVar Logical. Should the folds be stratified based on the response? If so, set TRUE.
 #' @param whatVarToStratifyOn Character. What is the name of the variable to stratify on?
 #'
-#' @return
+#' @return An rsample::vfold_cv() object.
 #' @export
 #'
 #' @examples
+#' library(easytidymodels)
+#' library(dplyr)
+#' utils::data(penguins, package = "modeldata")
+#' resp <- "sex"
+#' split <- trainTestSplit(penguins, stratifyOnResponse = TRUE, responseVar = resp)
+#' formula <- stats::as.formula(paste(resp, ".", sep="~"))
+#' rec <- recipes::recipe(formula, data = split$train) %>% recipes::prep()
+#' train_df <- recipes::bake(rec, split$train)
+#' folds <- cvFolds(train_df)
+#' folds
 
 
 cvFolds <- function(data = train,

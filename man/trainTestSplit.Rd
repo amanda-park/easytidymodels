@@ -2,14 +2,15 @@
 % Please edit documentation in R/trainTestSplit.R
 \name{trainTestSplit}
 \alias{trainTestSplit}
-\title{Split data into training and testing}
+\title{Split your data into a training and testing set}
 \usage{
 trainTestSplit(
   data = df,
   splitAmt = 0.8,
   timeDependent = FALSE,
   responseVar = "nameOfResponseVar",
-  stratifyOnResponse = FALSE
+  stratifyOnResponse = FALSE,
+  numberOfBootstrapSamples = 25
 )
 }
 \arguments{
@@ -22,10 +23,30 @@ trainTestSplit(
 \item{responseVar}{Name of response variable in analysis.}
 
 \item{stratifyOnResponse}{Logical. Should the training and testing splits be stratified based on the response? If so, set TRUE.}
+
+\item{numberOfBootstrapSamples}{Numeric. How many bootstrap samples do you want? Default is 25.}
 }
 \value{
-
+A list with four components: train is the training set, test is the testing set, boot is a bootstrapped data set, and split is an rsample object that helps split your original data set.
 }
 \description{
 Create a training and testing data set. Also returns a bootstrapped version of the training data set.
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+utils::data(penguins, package = "modeldata")
+resp <- "sex"
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE, responseVar = resp)
+#Training data
+split$train
+
+#Testing data
+split$test
+
+#Bootstrapped data
+split$boot
+
+#Split object (helpful to call if you want to do model stacking)
+split$split
 }

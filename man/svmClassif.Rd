@@ -11,7 +11,7 @@ svmClassif(
   train = train_df,
   test = test_df,
   gridNumber = 15,
-  evalMetric = "rmse"
+  evalMetric = "bal_accuracy"
 )
 }
 \arguments{
@@ -23,15 +23,77 @@ svmClassif(
 
 \item{train}{The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{gridNumber}{The size of the grid to tune on.}
+\item{gridNumber}{Numeric. The size of the grid to tune on. Default is 15.}
 
-\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
+\itemize{
+\item bal_accuracy
+\item mn_log_loss
+\item roc_auc
+\item mcc
+\item kap
+\item sens
+\item spec
+\item precision
+\item recall
+}}
 }
 \value{
-
+A list with the following outputs:
+\itemize{
+\item Training confusion matrix
+\item Training model metric score
+\item Testing confusion matrix
+\item Testing model metric score
+\item Final model chosen
+\item Tuned model
+}
 }
 \description{
 Fits a radial basis Support Vector Machine Classification Model.
+}
+\details{
+Note - tunes the following parameters:
+\itemize{
+\item cost: The cost of predicting a sample within or on the wrong side of the margin.
+\item rbf_sigma: The precision parameter for the radial basis function.
+}
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+#Define your response variable and formula object here
+resp <- "sex"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE,
+responseVar = resp)
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, data = split$train) \%>\% step_knnimpute(!!resp) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\%
+step_medianimpute(all_predictors()) \%>\% step_normalize(all_predictors()) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\% step_nzv(all_predictors()) \%>\%
+step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+#svm <- svmClassif(recipe = rec, response = resp, folds = folds,
+#train = train_df, test = test_df)
+
+#Confusion Matrix
+#svm$trainConfMat
+
+#Plot of confusion matrix
+#svm$trainConfMatPlot
+
+#Test Confusion Matrix
+#svm$testConfMat
+
+#Test Confusion Matrix Plot
+#svm$testConfMatPlot
+
 }

@@ -23,21 +23,90 @@ rfRegress(
 
 \item{folds}{A rsample::vfolds_cv object.}
 
-\item{train}{The training data set.}
+\item{train}{Data frame/tibble. The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{response}{The variable that is the response for analysis.}
+\item{response}{Character. The variable that is the response for analysis.}
 
-\item{treeNum}{The number of trees to evaluate your model with.}
+\item{treeNum}{Numeric. The number of trees to evaluate your model with.}
 
-\item{calcFeatImp}{Do you want to calculate feature importance for your model? If not, set = FALSE.}
+\item{calcFeatImp}{Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.}
 
-\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{Character. The regression metric you want to evaluate the model's accuracy on. Default is RMSE. Can choose from the following:
+\itemize{
+\item rmse
+\item mae
+\item rsq
+\item mase
+\item ccc
+\item icc
+\item huber_loss
+}}
 }
 \value{
-
+A list with the following features:
+\itemize{
+\item Training set predictions
+\item Training set evaluation on RMSE and MAE
+\item Testing set predictions
+\item Testing set evaluation on RMSE and MAE
+\item Feature importance plot
+\item Feature importance table (with exact values)
+\item Tuned model object
+}
 }
 \description{
 Runs a random forest regression.
+}
+\details{
+What the model tunes:
+\itemize{
+\item mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
+\item min_n: The minimum number of data points in a node that are required for the node to be split further.
+What you set specifically:
+\item trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+}
+}
+\examples{
+#' library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+
+#Define your response variable and formula object here
+resp <- "bill_length_mm"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, responseVar = resp)
+
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, split$train) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+#rfReg <- rfRegress(recipe = rec, response = resp, folds = folds,
+#train = train_df, test = test_df, calcFeatImp = TRUE)
+
+#Visualize training data and its predictions
+#rfReg$trainPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#rfReg$trainScore
+
+#Visualize testing data and its predictions
+#rfReg$testPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#rfReg$testScore
+
+#See the final model chosen by RF based on optimizing for your chosen evaluation metric
+#rfReg$final
+
+#See how model fit looks based on another evaluation metric
+#rfReg$tune \%>\% tune::select_best("rmse")
+
+#See feature importance of model
+#rfReg$featImpPlot
 }

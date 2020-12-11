@@ -17,31 +17,104 @@ linearRegress(
 )
 }
 \arguments{
-\item{response}{The variable that is the response for analysis.}
+\item{response}{Character. The variable that is the response for analysis.}
 
 \item{computeMarginalEffects}{Logical. Compute marginal effects for lm model?}
 
-\item{data}{The entire data frame.}
+\item{data}{The entire data frame. Used for tidyModelVersion = FALSE.}
 
-\item{train}{The training data set.}
+\item{train}{Data frame/tibble. The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{tidyModelVersion}{Logical. Run a tidymodel version of linear regression?}
+\item{tidyModelVersion}{Logical. Run a tidymodel version of linear regression? If yes, will tune hyperparameters and return a tidymodels regression model. If no, will fit an lm() object and return output based on that computation.}
 
-\item{recipe}{A recipe object.}
+\item{recipe}{A recipes::recipe object.}
 
 \item{folds}{A rsample::vfolds_cv object.}
 
-\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{Character. The regression metric you want to evaluate the model's accuracy on (tidymodels only). Default is RMSE. Can choose from the following:
+\itemize{
+\item rmse
+\item mae
+\item rsq
+\item mase
+\item ccc
+\item icc
+\item huber_loss
+}}
 }
 \value{
+A list.
 
+If tidyModelVersion = TRUE:
+\itemize{
+\item Training set predictions
+\item Training set evaluation on RMSE and MAE
+\item Testing set predictions
+\item Testing set evaluation on RMSE and MAE
+\item Tuned model object
+}
+
+If tidyModelVersion = FALSE:
+\itemize{
+\item lm() model object
+\item broom() cleaned object of summary of lm() model
+\item diagnostic plots
+}
 }
 \description{
 Runs a linear regression model, and either:
 \enumerate{
 \item fits a basic lm() model and shows diagnostics and model fit
-\item evaluates it on training and testing set, and tunes hyperparameters.
+\item Uses the tidymodels approach: evaluates it on training and testing set, and tunes hyperparameters.
 }
+}
+\details{
+Note: Tidymodels version tunes the following parameters:
+\itemize{
+\item penalty: The total amount of regularization in the model. Also known as lambda.
+\item mixture: The mixture amounts of different types of regularization (see below). If 1, amounts to LASSO regression. If 0, amounts to Ridge Regression. Also known as alpha.
+}
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+
+#Define your response variable and formula object here
+resp <- "bill_length_mm"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, responseVar = resp)
+
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, split$train) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+
+#Fit a KNN regression object (commented out only due to long run time)
+#linReg <- linearRegress(recipe = rec, response = resp, data = penguins, tidyModelVersion = FALSE,
+#folds = folds, train = train_df, test = test_df, evalMetric = "rmse")
+
+#Visualize training data and its predictions
+#linReg$trainPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#linReg$trainScore
+
+#Visualize testing data and its predictions
+#linReg$testPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#linReg$testScore
+
+#See the final model chosen by KNN based on optimizing for your chosen evaluation metric
+#linReg$final
+
+#See how model fit looks based on another evaluation metric
+#linReg$tune \%>\% tune::show_best("mae")
 }

@@ -21,8 +21,20 @@ cvFolds(
 \item{whatVarToStratifyOn}{Character. What is the name of the variable to stratify on?}
 }
 \value{
-
+An rsample::vfold_cv() object.
 }
 \description{
 Create folds based on training data fed in.
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+utils::data(penguins, package = "modeldata")
+resp <- "sex"
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE, responseVar = resp)
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+rec <- recipes::recipe(formula, data = split$train) \%>\% recipes::prep()
+train_df <- recipes::bake(rec, split$train)
+folds <- cvFolds(train_df)
+folds
 }
