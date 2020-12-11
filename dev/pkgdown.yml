@@ -1,0 +1,8 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  easytidymodels-classification: easytidymodels-classification.html
+  easytidymodels-regression: easytidymodels-regression.html
+last_built: 2020-12-11T22:15Z
+
