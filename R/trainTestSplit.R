@@ -1,4 +1,4 @@
-#' Split data into training and testing
+#' Split your data into a training and testing set
 #'
 #' Create a training and testing data set. Also returns a bootstrapped version of the training data set.
 #'
@@ -7,16 +7,34 @@
 #' @param timeDependent Logical. Is your data time-dependent? If so, set TRUE.
 #' @param responseVar Name of response variable in analysis.
 #' @param stratifyOnResponse Logical. Should the training and testing splits be stratified based on the response? If so, set TRUE.
+#' @param numberOfBootstrapSamples Numeric. How many bootstrap samples do you want? Default is 25.
 #'
-#' @return
+#' @return A list with four components: train is the training set, test is the testing set, boot is a bootstrapped data set, and split is an rsample object that helps split your original data set.
 #' @export
 #'
 #' @examples
+#' library(easytidymodels)
+#' library(dplyr)
+#' utils::data(penguins, package = "modeldata")
+#' resp <- "sex"
+#' split <- trainTestSplit(penguins, stratifyOnResponse = TRUE, responseVar = resp)
+#' #Training data
+#' split$train
+#'
+#' #Testing data
+#' split$test
+#'
+#' #Bootstrapped data
+#' split$boot
+#'
+#' #Split object (helpful to call if you want to do model stacking)
+#' split$split
 trainTestSplit <- function(data = df,
                            splitAmt = .8,
                            timeDependent = FALSE,
                            responseVar = "nameOfResponseVar",
-                           stratifyOnResponse = FALSE) {
+                           stratifyOnResponse = FALSE,
+                           numberOfBootstrapSamples = 25) {
 
   if(timeDependent == FALSE) {
     if(stratifyOnResponse == FALSE) {
@@ -37,7 +55,7 @@ trainTestSplit <- function(data = df,
 
   datTrain <- rsample::training(split)
   datTest <- rsample::testing(split)
-  datBoot <- rsample::bootstraps(datTrain)
+  datBoot <- rsample::bootstraps(datTrain, times = numberOfBootstrapSamples)
 
   output <- list("train" = datTrain,
               "test" = datTest,

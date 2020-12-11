@@ -28,7 +28,7 @@ Suggests:
     kernlab,
     knitr,
     rmarkdown,
-    qpdf
+    modeldata
 Imports: 
     rsample (>= 0.0.8),
     dplyr (>= 1.0.2),
@@ -42,4 +42,5 @@ Imports:
     recipes (>= 0.1.15),
     vip (>= 0.2.2),
     broom (>= 0.7.2),
+    qpdf
 VignetteBuilder: knitr

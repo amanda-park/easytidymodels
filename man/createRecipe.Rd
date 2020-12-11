@@ -2,18 +2,50 @@
 % Please edit documentation in R/createRecipe.R
 \name{createRecipe}
 \alias{createRecipe}
-\title{Creates recipes}
+\title{Creates recipes to preprocess data set}
 \usage{
-createRecipe(data = data, responseVar = "response")
+createRecipe(
+  data = data,
+  responseVar = "response",
+  corrValue = 0.9,
+  otherValue = 0.01
+)
 }
 \arguments{
 \item{data}{The training data set}
 
 \item{responseVar}{the variable that is the response for analysis.}
+
+\item{corrValue}{The value to remove variables that are highly correlated from dataset. The step will try to remove the minimum number of columns so that all the resulting absolute correlations are less than this value. Default value is .9.}
+
+\item{otherValue}{The minimum frequency of a level in a factor variable needed to avoid converting its outcome to "other". Default is .01.}
 }
 \value{
-
+A recipes::recipe object that has been prepped.
 }
 \description{
-Create recipes
+Creates and returns a recipe object.
+}
+\details{
+The following data transformations are automatically applied to the data:
+\itemize{
+\item Normalizes numeric variables
+\item Puts infrequent levels of categorical variables into "other" category
+\item Puts NA values into "unknown" category
+\item Removes variables with near-zero variance
+\item Removes highly correlated variables
+\item One-hot encodes your categorical variables
+}
+
+If a different recipe is needed, I recommend calling the recipes library and building one appropriate for your dataset (this function is hard to automate given the variety of data transformations that can happen for a specific data set).
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+utils::data(penguins, package = "modeldata")
+resp <- "sex"
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE, responseVar = resp)
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+rec <- createRecipe(split$train, responseVar = resp)
+rec
 }

@@ -18,17 +18,79 @@ logRegBinary(
 
 \item{folds}{A rsample::vfolds_cv object.}
 
-\item{train}{The training data set.}
+\item{train}{Data frame/tibble. The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{response}{The variable that is the response for analysis.}
+\item{response}{Character. The variable that is the response for analysis.}
 
-\item{evalMetric}{The classification metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{Character. The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
+\itemize{
+\item bal_accuracy
+\item mn_log_loss
+\item roc_auc
+\item mcc
+\item kap
+\item sens
+\item spec
+\item precision
+\item recall
+}}
 }
 \value{
-
+A list with the following outputs:
+\itemize{
+\item Training confusion matrix
+\item Training model metric score
+\item Testing confusion matrix
+\item Testing model metric score
+\item Final model chosen
+\item Tuned model
+}
 }
 \description{
 Runs a logistic regression model, evaluates it on training and testing set, and tunes hyperparameters.
+}
+\details{
+What the model tunes:
+\itemize{
+\item penalty: The total amount of regularization in the model. Also known as lambda.
+\item mixture: The mixture amounts of different types of regularization (see below). If 1, amounts to LASSO regression. If 0, amounts to Ridge Regression. Also known as alpha.
+}
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+#Define your response variable and formula object here
+resp <- "sex"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE,
+responseVar = resp)
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, data = split$train) \%>\% step_knnimpute(!!resp) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\%
+step_medianimpute(all_predictors()) \%>\% step_normalize(all_predictors()) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\% step_nzv(all_predictors()) \%>\%
+step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+#lr <- logRegBinary(recipe = rec, response = resp, folds = folds,
+#train = train_df, test = test_df)
+
+#Confusion Matrix
+#lr$trainConfMat
+
+#Plot of confusion matrix
+#lr$trainConfMatPlot
+
+#Test Confusion Matrix
+#lr$testConfMat
+
+#Test Confusion Matrix Plot
+#lr$testConfMatPlot
+
 }

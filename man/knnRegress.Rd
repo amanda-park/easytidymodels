@@ -15,23 +15,88 @@ knnRegress(
 )
 }
 \arguments{
-\item{response}{The variable that is the response for analysis.}
+\item{response}{Character. The variable that is the response for analysis.}
 
-\item{recipe}{A recipe object.}
+\item{recipe}{A recipes::recipe object.}
 
 \item{folds}{A rsample::vfolds_cv object.}
 
-\item{train}{The training data set.}
+\item{train}{Data frame/tibble. The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{gridNumber}{The size of the grid to tune on.}
+\item{gridNumber}{Numeric. The size of the grid to tune on. Default is 15.}
 
-\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{Character. The regression metric you want to evaluate the model's accuracy on. Default is RMSE. Can choose from the following:
+\itemize{
+\item rmse
+\item mae
+\item rsq
+\item mase
+\item ccc
+\item icc
+\item huber_loss
+}}
 }
 \value{
-
+A list with the following elements:
+\itemize{
+\item Training set predictions
+\item Training set evaluation on RMSE and MAE
+\item Testing set predictions
+\item Testing set evaluation on RMSE and MAE
+\item Tuned model object
+}
 }
 \description{
 Fits a K-Nearest Neighbors Regression Model.
+}
+\details{
+Note: tunes the following parameters:
+\itemize{
+\item neighbors: The number of neighbors considered at each prediction.
+\item weight_func: The type of kernel function that weights the distances between samples.
+\item dist_power: The parameter used when calculating the Minkowski distance. This corresponds to the Manhattan distance with dist_power = 1 and the Euclidean distance with dist_power = 2.
+}
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+
+#Define your response variable and formula object here
+resp <- "bill_length_mm"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, responseVar = resp)
+
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, split$train) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+
+#Fit a KNN regression object (commented out only due to long run time)
+#knnReg <- knnRegress(recipe = rec, response = resp,
+#folds = folds, train = train_df, test = test_df, evalMetric = "rmse")
+
+#Visualize training data and its predictions
+#knnReg$trainPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#knnReg$trainScore
+
+#Visualize testing data and its predictions
+#knnReg$testPred \%>\% select(.pred, !!resp)
+
+#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#knnReg$testScore
+
+#See the final model chosen by KNN based on optimizing for your chosen evaluation metric
+#knnReg$final
+
+#See how model fit looks based on another evaluation metric
+#knnReg$tune \%>\% tune::show_best("mae")
 }

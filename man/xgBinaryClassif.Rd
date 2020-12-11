@@ -23,21 +23,90 @@ xgBinaryClassif(
 
 \item{folds}{A rsample::vfolds_cv object.}
 
-\item{train}{The training data set.}
+\item{train}{Data frame/tibble. The training data set.}
 
-\item{test}{The testing data set.}
+\item{test}{Data frame/tibble. The testing data set.}
 
-\item{response}{The variable that is the response for analysis.}
+\item{response}{Character. The variable that is the response for analysis.}
 
-\item{treeNum}{The number of trees to evaluate your model with.}
+\item{treeNum}{Numeric. The number of trees to evaluate your model with.}
 
-\item{calcFeatImp}{Do you want to calculate feature importance for your model? If not, set = FALSE.}
+\item{calcFeatImp}{Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.}
 
-\item{evalMetric}{The classification metric you want to evaluate the model's accuracy on.}
+\item{evalMetric}{Character. The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
+\itemize{
+\item bal_accuracy
+\item mn_log_loss
+\item roc_auc
+\item mcc
+\item kap
+\item sens
+\item spec
+\item precision
+\item recall
+}}
 }
 \value{
-
+A list with the following outputs:
+\itemize{
+\item Training confusion matrix
+\item Training model metric score
+\item Testing confusion matrix
+\item Testing model metric score
+\item Final model chosen by XGBoost
+\item Tuned model
+\item Feature importance plot
+\item Feature importance variable
+}
 }
 \description{
 Runs XGBoost for binary classification.
+}
+\examples{
+library(easytidymodels)
+library(dplyr)
+library(recipes)
+utils::data(penguins, package = "modeldata")
+#Define your response variable and formula object here
+resp <- "sex"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+#Split data into training and testing sets
+split <- trainTestSplit(penguins, stratifyOnResponse = TRUE,
+responseVar = resp)
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, data = split$train) \%>\% step_knnimpute(!!resp) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\%
+step_medianimpute(all_predictors()) \%>\% step_normalize(all_predictors()) \%>\%
+step_dummy(all_nominal(), -all_outcomes()) \%>\% step_nzv(all_predictors()) \%>\%
+step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+folds <- cvFolds(train_df)
+#xgClass <- xgBinaryClassif(recipe = rec, response = resp, folds = folds,
+#train = train_df, test = test_df, evalMetric = "roc_auc")
+
+#Visualize training data and its predictions
+#xgClass$trainConfMat
+
+#View how model metrics look
+#xgClass$trainScore
+
+#Visualize testing data and its predictions
+#xgClass$testConfMat
+
+#View how model metrics look
+#xgClass$testScore
+
+#See the final model chosen by XGBoost based on optimizing for your chosen evaluation metric
+#xgClass$final
+
+#See how model fit looks based on another evaluation metric
+#xgClass$tune \%>\% tune::show_best("bal_accuracy")
+
+#Feature importance plot
+#xgClass$featImpPlot
+
+#Feature importance variables
+#xgClass$featImpVars
+
 }

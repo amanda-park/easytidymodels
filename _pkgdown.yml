@@ -4,4 +4,26 @@ template:
 development:
   mode: devel
   repo: https://github.com/amanda-park/easytidymodels
-
+reference:
+- title: "Data Preprocessing"
+- contents:
+  - trainTestSplit
+  - createRecipe
+  - cvFolds
+- title: "Regression Functions"
+- contents:
+  - ends_with("Regress")
+- title: "Classification Functions"
+  desc: "If multi is in the name, it's meant to be used only for multiclass classification. If binary is in the name, only meant for binary classification."
+- contents:
+  - knnClassif
+  - logRegBinary
+  - logRegMulti
+  - svmClassif
+  - xgBinaryClassif
+  - xgMultiClassif
+- title: "Time Series Functions"
+- contents:
+  - initialTimeSeriesEval
+  - modelTimeSeries
+  - resampleTimeSeries

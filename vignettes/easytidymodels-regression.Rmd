@@ -34,7 +34,6 @@ library(recipes)
 library(doParallel)
 
 data(ames, package = "modeldata")
-
 #Use parallel compute to speed up processing time
 cores <- parallel::detectCores(logical = FALSE)
 registerDoParallel(cores = cores)
