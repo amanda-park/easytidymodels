@@ -2,7 +2,7 @@
 % Please edit documentation in R/logRegBinary.R
 \name{logRegBinary}
 \alias{logRegBinary}
-\title{Logistic Regression.}
+\title{Logistic Regression}
 \usage{
 logRegBinary(
   recipe = rec,
@@ -78,6 +78,7 @@ step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
 train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
 folds <- cvFolds(train_df)
+
 #lr <- logRegBinary(recipe = rec, response = resp, folds = folds,
 #train = train_df, test = test_df)
 

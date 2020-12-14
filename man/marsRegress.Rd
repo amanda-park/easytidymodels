@@ -2,7 +2,7 @@
 % Please edit documentation in R/marsRegress.R
 \name{marsRegress}
 \alias{marsRegress}
-\title{MARS}
+\title{Multi Adaptive Regressive Spline}
 \usage{
 marsRegress(
   response = response,

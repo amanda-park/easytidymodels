@@ -22,8 +22,3 @@ reference:
   - svmClassif
   - xgBinaryClassif
   - xgMultiClassif
-- title: "Time Series Functions"
-- contents:
-  - initialTimeSeriesEval
-  - modelTimeSeries
-  - resampleTimeSeries

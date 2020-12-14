@@ -2,7 +2,7 @@
 % Please edit documentation in R/knnClassif.R
 \name{knnClassif}
 \alias{knnClassif}
-\title{KNN Classification}
+\title{K-Nearest Neighbors Classification}
 \usage{
 knnClassif(
   response = response,
@@ -25,7 +25,7 @@ knnClassif(
 
 \item{test}{Data frame/tibble. The testing data set.}
 
-\item{gridNumber}{Numeric. The size of the grid to tune on.}
+\item{gridNumber}{Numeric. The size of the grid to tune on. Default is 15.}
 
 \item{evalMetric}{Character. The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
 \itemize{
@@ -54,6 +54,14 @@ A list with the following outputs:
 \description{
 Fits a K-Nearest Neighbors Classification Model.
 }
+\details{
+Note: tunes the following parameters:
+\itemize{
+\item neighbors: The number of neighbors considered at each prediction.
+\item weight_func: The type of kernel function that weights the distances between samples.
+\item dist_power: The parameter used when calculating the Minkowski distance. This corresponds to the Manhattan distance with dist_power = 1 and the Euclidean distance with dist_power = 2.
+}
+}
 \examples{
 library(easytidymodels)
 library(dplyr)
@@ -74,18 +82,19 @@ step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
 train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
 folds <- cvFolds(train_df)
-#svm <- svmClassif(recipe = rec, response = resp, folds = folds,
+
+#knn <- svmClassif(recipe = rec, response = resp, folds = folds,
 #train = train_df, test = test_df)
 
 #Confusion Matrix
-#svm$trainConfMat
+#knn$trainConfMat
 
 #Plot of confusion matrix
-#svm$trainConfMatPlot
+#knn$trainConfMatPlot
 
 #Test Confusion Matrix
-#svm$testConfMat
+#knn$testConfMat
 
 #Test Confusion Matrix Plot
-#svm$testConfMatPlot
+#knn$testConfMatPlot
 }

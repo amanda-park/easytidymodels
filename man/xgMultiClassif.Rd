@@ -65,6 +65,22 @@ A list with the following outputs:
 \description{
 Runs XGBoost for multiclass classification.
 }
+\details{
+What the model tunes:
+\itemize{
+\item mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
+\item min_n: The minimum number of data points in a node that are required for the node to be split further.
+\item tree_depth: The maximum depth of the tree (i.e. number of splits).
+\item learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
+\item loss_reduction: The reduction in the loss function required to split further.
+\item sample_size: The amount of data exposed to the fitting routine.
+}
+
+What you set specifically:
+\itemize{
+\item trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+}
+}
 \examples{
 library(easytidymodels)
 library(dplyr)

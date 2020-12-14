@@ -29,7 +29,7 @@ xgRegress(
 
 \item{response}{Character. The variable that is the response for analysis.}
 
-\item{treeNum}{Numeric. The number of trees to evaluate your model with.}
+\item{treeNum}{Numeric. The number of trees to evaluate your model with. Default is 100.}
 
 \item{calcFeatImp}{Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.}
 
@@ -68,7 +68,10 @@ What the model tunes:
 \item learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
 \item loss_reduction: The reduction in the loss function required to split further.
 \item sample_size: The amount of data exposed to the fitting routine.
+}
+
 What you set specifically:
+\itemize{
 \item trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
 }
 }

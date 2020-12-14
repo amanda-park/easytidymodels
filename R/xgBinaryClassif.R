@@ -2,13 +2,24 @@
 #'
 #' Runs XGBoost for binary classification.
 #'
+#' What the model tunes:
+#' * mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
+#' * min_n: The minimum number of data points in a node that are required for the node to be split further.
+#' * tree_depth: The maximum depth of the tree (i.e. number of splits).
+#' * learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
+#' * loss_reduction: The reduction in the loss function required to split further.
+#' * sample_size: The amount of data exposed to the fitting routine.
+#'
+#' What you set specifically:
+#' * trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+#'
 #' @param gridNumber Numeric. Size of the grid you want XGBoost to explore. Default is 10.
 #' @param recipe A recipe object.
 #' @param folds A rsample::vfolds_cv object.
 #' @param train Data frame/tibble. The training data set.
 #' @param test Data frame/tibble. The testing data set.
 #' @param response Character. The variable that is the response for analysis.
-#' @param treeNum Numeric. The number of trees to evaluate your model with.
+#' @param treeNum Numeric. The number of trees to evaluate your model with. Default is 100.
 #' @param calcFeatImp Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.
 #' @param evalMetric Character. The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
 #' * bal_accuracy
@@ -52,6 +63,7 @@
 #' train_df <- bake(rec, split$train)
 #' test_df <- bake(rec, split$test)
 #' folds <- cvFolds(train_df)
+#'
 #' #xgClass <- xgBinaryClassif(recipe = rec, response = resp, folds = folds,
 #' #train = train_df, test = test_df, evalMetric = "roc_auc")
 #'

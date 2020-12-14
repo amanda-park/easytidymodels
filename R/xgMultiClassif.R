@@ -2,6 +2,17 @@
 #'
 #' Runs XGBoost for multiclass classification.
 #'
+#' What the model tunes:
+#' * mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
+#' * min_n: The minimum number of data points in a node that are required for the node to be split further.
+#' * tree_depth: The maximum depth of the tree (i.e. number of splits).
+#' * learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
+#' * loss_reduction: The reduction in the loss function required to split further.
+#' * sample_size: The amount of data exposed to the fitting routine.
+#'
+#' What you set specifically:
+#' * trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+#'
 #' @param gridNumber Numeric. Size of the grid you want XGBoost to explore. Default is 10.
 #' @param recipe A recipe object.
 #' @param levelNumber Numeric. How many levels are in your response? Default is 3.

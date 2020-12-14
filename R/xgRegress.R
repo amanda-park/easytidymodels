@@ -9,6 +9,7 @@
 #' * learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
 #' * loss_reduction: The reduction in the loss function required to split further.
 #' * sample_size: The amount of data exposed to the fitting routine.
+#'
 #' What you set specifically:
 #' * trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
 #'
@@ -18,7 +19,7 @@
 #' @param train Data frame/tibble. The training data set.
 #' @param test Data frame/tibble. The testing data set.
 #' @param response Character. The variable that is the response for analysis.
-#' @param treeNum Numeric. The number of trees to evaluate your model with.
+#' @param treeNum Numeric. The number of trees to evaluate your model with. Default is 100.
 #' @param calcFeatImp Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.
 #' @param evalMetric Character. The regression metric you want to evaluate the model's accuracy on. Default is RMSE. Can choose from the following:
 #'

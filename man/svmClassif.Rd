@@ -27,7 +27,7 @@ svmClassif(
 
 \item{gridNumber}{Numeric. The size of the grid to tune on. Default is 15.}
 
-\item{evalMetric}{The regression metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
+\item{evalMetric}{The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
 \itemize{
 \item bal_accuracy
 \item mn_log_loss
@@ -81,6 +81,7 @@ step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
 train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
 folds <- cvFolds(train_df)
+
 #svm <- svmClassif(recipe = rec, response = resp, folds = folds,
 #train = train_df, test = test_df)
 

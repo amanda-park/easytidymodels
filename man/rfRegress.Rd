@@ -29,7 +29,7 @@ rfRegress(
 
 \item{response}{Character. The variable that is the response for analysis.}
 
-\item{treeNum}{Numeric. The number of trees to evaluate your model with.}
+\item{treeNum}{Numeric. The number of trees to evaluate your model with. Default is 100.}
 
 \item{calcFeatImp}{Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.}
 
@@ -64,7 +64,10 @@ What the model tunes:
 \itemize{
 \item mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
 \item min_n: The minimum number of data points in a node that are required for the node to be split further.
+}
+
 What you set specifically:
+\itemize{
 \item trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
 }
 }
