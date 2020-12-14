@@ -29,7 +29,7 @@ xgBinaryClassif(
 
 \item{response}{Character. The variable that is the response for analysis.}
 
-\item{treeNum}{Numeric. The number of trees to evaluate your model with.}
+\item{treeNum}{Numeric. The number of trees to evaluate your model with. Default is 100.}
 
 \item{calcFeatImp}{Logical. Do you want to calculate feature importance for your model? If not, set = FALSE.}
 
@@ -62,6 +62,22 @@ A list with the following outputs:
 \description{
 Runs XGBoost for binary classification.
 }
+\details{
+What the model tunes:
+\itemize{
+\item mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.
+\item min_n: The minimum number of data points in a node that are required for the node to be split further.
+\item tree_depth: The maximum depth of the tree (i.e. number of splits).
+\item learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.
+\item loss_reduction: The reduction in the loss function required to split further.
+\item sample_size: The amount of data exposed to the fitting routine.
+}
+
+What you set specifically:
+\itemize{
+\item trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.
+}
+}
 \examples{
 library(easytidymodels)
 library(dplyr)
@@ -82,6 +98,7 @@ step_corr(all_numeric(), -all_outcomes(), threshold = .8) \%>\% prep()
 train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
 folds <- cvFolds(train_df)
+
 #xgClass <- xgBinaryClassif(recipe = rec, response = resp, folds = folds,
 #train = train_df, test = test_df, evalMetric = "roc_auc")
 

@@ -12,7 +12,7 @@
 #' @param train The training data set.
 #' @param test Data frame/tibble. The testing data set.
 #' @param gridNumber Numeric. The size of the grid to tune on. Default is 15.
-#' @param evalMetric The regression metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
+#' @param evalMetric The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
 #' * bal_accuracy
 #' * mn_log_loss
 #' * roc_auc
@@ -52,6 +52,7 @@
 #' train_df <- bake(rec, split$train)
 #' test_df <- bake(rec, split$test)
 #' folds <- cvFolds(train_df)
+#'
 #' #svm <- svmClassif(recipe = rec, response = resp, folds = folds,
 #' #train = train_df, test = test_df)
 #'

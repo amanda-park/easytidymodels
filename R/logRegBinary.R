@@ -1,4 +1,4 @@
-#' Logistic Regression.
+#' Logistic Regression
 #'
 #' Runs a logistic regression model, evaluates it on training and testing set, and tunes hyperparameters.
 #'
@@ -51,6 +51,7 @@
 #' train_df <- bake(rec, split$train)
 #' test_df <- bake(rec, split$test)
 #' folds <- cvFolds(train_df)
+#'
 #' #lr <- logRegBinary(recipe = rec, response = resp, folds = folds,
 #' #train = train_df, test = test_df)
 #'

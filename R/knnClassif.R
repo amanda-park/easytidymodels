@@ -1,13 +1,18 @@
-#' KNN Classification
+#' K-Nearest Neighbors Classification
 #'
 #' Fits a K-Nearest Neighbors Classification Model.
+#'
+#' Note: tunes the following parameters:
+#' * neighbors: The number of neighbors considered at each prediction.
+#' * weight_func: The type of kernel function that weights the distances between samples.
+#' * dist_power: The parameter used when calculating the Minkowski distance. This corresponds to the Manhattan distance with dist_power = 1 and the Euclidean distance with dist_power = 2.
 #'
 #' @param response Character. The variable that is the response for analysis.
 #' @param recipe A recipe object.
 #' @param folds A rsample::vfolds_cv object.
 #' @param train Data frame/tibble. The training data set.
 #' @param test Data frame/tibble. The testing data set.
-#' @param gridNumber Numeric. The size of the grid to tune on.
+#' @param gridNumber Numeric. The size of the grid to tune on. Default is 15.
 #' @param evalMetric Character. The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:
 #' * bal_accuracy
 #' * mn_log_loss
@@ -48,20 +53,21 @@
 #' train_df <- bake(rec, split$train)
 #' test_df <- bake(rec, split$test)
 #' folds <- cvFolds(train_df)
-#' #svm <- svmClassif(recipe = rec, response = resp, folds = folds,
+#'
+#' #knn <- svmClassif(recipe = rec, response = resp, folds = folds,
 #' #train = train_df, test = test_df)
 #'
 #' #Confusion Matrix
-#' #svm$trainConfMat
+#' #knn$trainConfMat
 #'
 #' #Plot of confusion matrix
-#' #svm$trainConfMatPlot
+#' #knn$trainConfMatPlot
 #'
 #' #Test Confusion Matrix
-#' #svm$testConfMat
+#' #knn$testConfMat
 #'
 #' #Test Confusion Matrix Plot
-#' #svm$testConfMatPlot
+#' #knn$testConfMatPlot
 #' @importFrom magrittr "%>%"
 
 knnClassif <- function(response = response,

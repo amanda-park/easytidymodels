@@ -1,4 +1,4 @@
-#' MARS
+#' Multi Adaptive Regressive Spline
 #'
 #' Fits a MARS regression model.
 #'

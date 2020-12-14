@@ -96,7 +96,7 @@ train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
 folds <- cvFolds(train_df)
 
-#Fit a KNN regression object (commented out only due to long run time)
+#Fit a linear regression model (commented out only due to long run time)
 #linReg <- linearRegress(recipe = rec, response = resp, data = penguins, tidyModelVersion = FALSE,
 #folds = folds, train = train_df, test = test_df, evalMetric = "rmse")
 

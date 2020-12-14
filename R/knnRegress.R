@@ -1,4 +1,4 @@
-#' KNN Regression
+#' K-Nearest Neighbors Regression
 #'
 #' Fits a K-Nearest Neighbors Regression Model.
 #'

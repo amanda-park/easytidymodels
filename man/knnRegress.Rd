@@ -2,7 +2,7 @@
 % Please edit documentation in R/knnRegress.R
 \name{knnRegress}
 \alias{knnRegress}
-\title{KNN Regression}
+\title{K-Nearest Neighbors Regression}
 \usage{
 knnRegress(
   response = response,
