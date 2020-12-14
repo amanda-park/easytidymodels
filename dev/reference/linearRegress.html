@@ -84,7 +84,7 @@ Uses the tidymodels approach: evaluates it on training and testing set, and tune
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -240,7 +240,7 @@ Uses the tidymodels approach: evaluates it on training and testing set, and tune
 <span class='va'>test_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>test</span><span class='op'>)</span>
 <span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cvFolds.html'>cvFolds</a></span><span class='op'>(</span><span class='va'>train_df</span><span class='op'>)</span>
 
-<span class='co'>#Fit a KNN regression object (commented out only due to long run time)</span>
+<span class='co'>#Fit a linear regression model (commented out only due to long run time)</span>
 <span class='co'>#linReg &lt;- linearRegress(recipe = rec, response = resp, data = penguins, tidyModelVersion = FALSE,</span>
 <span class='co'>#folds = folds, train = train_df, test = test_df, evalMetric = "rmse")</span>
 

@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -206,6 +206,21 @@
 <li><p>Tuned model</p></li>
 <li><p>Feature importance plot</p></li>
 <li><p>Feature importance variable</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>What the model tunes:</p><ul>
+<li><p>mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.</p></li>
+<li><p>min_n: The minimum number of data points in a node that are required for the node to be split further.</p></li>
+<li><p>tree_depth: The maximum depth of the tree (i.e. number of splits).</p></li>
+<li><p>learn_rate: The rate at which the boosting algorithm adapts from iteration-to-iteration.</p></li>
+<li><p>loss_reduction: The reduction in the loss function required to split further.</p></li>
+<li><p>sample_size: The amount of data exposed to the fitting routine.</p></li>
+</ul>
+
+<p>What you set specifically:</p><ul>
+<li><p>trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.</p></li>
 </ul>
 
 

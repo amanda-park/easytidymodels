@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Logistic Regression. — logRegBinary • easytidymodels</title>
+<title>Logistic Regression — logRegBinary • easytidymodels</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Logistic Regression. — logRegBinary" />
+<meta property="og:title" content="Logistic Regression — logRegBinary" />
 <meta property="og:description" content="Runs a logistic regression model, evaluates it on training and testing set, and tunes hyperparameters." />
 
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,7 +118,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Logistic Regression.</h1>
+    <h1>Logistic Regression</h1>
     
     <div class="hidden name"><code>logRegBinary.Rd</code></div>
     </div>
@@ -214,6 +214,7 @@ responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='o
 <span class='va'>train_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>train</span><span class='op'>)</span>
 <span class='va'>test_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>test</span><span class='op'>)</span>
 <span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cvFolds.html'>cvFolds</a></span><span class='op'>(</span><span class='va'>train_df</span><span class='op'>)</span>
+
 <span class='co'>#lr &lt;- logRegBinary(recipe = rec, response = resp, folds = folds,</span>
 <span class='co'>#train = train_df, test = test_df)</span>
 

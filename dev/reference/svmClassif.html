@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -166,7 +166,7 @@
     </tr>
     <tr>
       <th>evalMetric</th>
-      <td><p>The regression metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:</p><ul>
+      <td><p>The classification metric you want to evaluate the model's accuracy on. Default is bal_accuracy. List of metrics available to choose from:</p><ul>
 <li><p>bal_accuracy</p></li>
 <li><p>mn_log_loss</p></li>
 <li><p>roc_auc</p></li>
@@ -219,6 +219,7 @@ responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='o
 <span class='va'>train_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>train</span><span class='op'>)</span>
 <span class='va'>test_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>test</span><span class='op'>)</span>
 <span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cvFolds.html'>cvFolds</a></span><span class='op'>(</span><span class='va'>train_df</span><span class='op'>)</span>
+
 <span class='co'>#svm &lt;- svmClassif(recipe = rec, response = resp, folds = folds,</span>
 <span class='co'>#train = train_df, test = test_df)</span>
 

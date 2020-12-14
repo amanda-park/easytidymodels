@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -168,7 +168,7 @@
     </tr>
     <tr>
       <th>treeNum</th>
-      <td><p>Numeric. The number of trees to evaluate your model with.</p></td>
+      <td><p>Numeric. The number of trees to evaluate your model with. Default is 100.</p></td>
     </tr>
     <tr>
       <th>calcFeatImp</th>
@@ -204,8 +204,10 @@
 
     <p>What the model tunes:</p><ul>
 <li><p>mtry: The number of predictors that will be randomly sampled at each split when creating the tree models.</p></li>
-<li><p>min_n: The minimum number of data points in a node that are required for the node to be split further.
-What you set specifically:</p></li>
+<li><p>min_n: The minimum number of data points in a node that are required for the node to be split further.</p></li>
+</ul>
+
+<p>What you set specifically:</p><ul>
 <li><p>trees: Default is 100. Sets the number of trees contained in the ensemble. A larger values increases runtime but (ideally) leads to more robust outcomes.</p></li>
 </ul>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KNN Classification — knnClassif • easytidymodels</title>
+<title>K-Nearest Neighbors Classification — knnClassif • easytidymodels</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="KNN Classification — knnClassif" />
+<meta property="og:title" content="K-Nearest Neighbors Classification — knnClassif" />
 <meta property="og:description" content="Fits a K-Nearest Neighbors Classification Model." />
 
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,7 +118,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>KNN Classification</h1>
+    <h1>K-Nearest Neighbors Classification</h1>
     
     <div class="hidden name"><code>knnClassif.Rd</code></div>
     </div>
@@ -162,7 +162,7 @@
     </tr>
     <tr>
       <th>gridNumber</th>
-      <td><p>Numeric. The size of the grid to tune on.</p></td>
+      <td><p>Numeric. The size of the grid to tune on. Default is 15.</p></td>
     </tr>
     <tr>
       <th>evalMetric</th>
@@ -191,6 +191,14 @@
 <li><p>Tuned model</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Note: tunes the following parameters:</p><ul>
+<li><p>neighbors: The number of neighbors considered at each prediction.</p></li>
+<li><p>weight_func: The type of kernel function that weights the distances between samples.</p></li>
+<li><p>dist_power: The parameter used when calculating the Minkowski distance. This corresponds to the Manhattan distance with dist_power = 1 and the Euclidean distance with dist_power = 2.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>easytidymodels</span><span class='op'>)</span>
@@ -215,20 +223,21 @@ responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='o
 <span class='va'>train_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>train</span><span class='op'>)</span>
 <span class='va'>test_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://recipes.tidymodels.org/reference/bake.html'>bake</a></span><span class='op'>(</span><span class='va'>rec</span>, <span class='va'>split</span><span class='op'>$</span><span class='va'>test</span><span class='op'>)</span>
 <span class='va'>folds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cvFolds.html'>cvFolds</a></span><span class='op'>(</span><span class='va'>train_df</span><span class='op'>)</span>
-<span class='co'>#svm &lt;- svmClassif(recipe = rec, response = resp, folds = folds,</span>
+
+<span class='co'>#knn &lt;- svmClassif(recipe = rec, response = resp, folds = folds,</span>
 <span class='co'>#train = train_df, test = test_df)</span>
 
 <span class='co'>#Confusion Matrix</span>
-<span class='co'>#svm$trainConfMat</span>
+<span class='co'>#knn$trainConfMat</span>
 
 <span class='co'>#Plot of confusion matrix</span>
-<span class='co'>#svm$trainConfMatPlot</span>
+<span class='co'>#knn$trainConfMatPlot</span>
 
 <span class='co'>#Test Confusion Matrix</span>
-<span class='co'>#svm$testConfMat</span>
+<span class='co'>#knn$testConfMat</span>
 
 <span class='co'>#Test Confusion Matrix Plot</span>
-<span class='co'>#svm$testConfMatPlot</span>
+<span class='co'>#knn$testConfMatPlot</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
