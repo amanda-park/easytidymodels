@@ -2,7 +2,6 @@ template:
   params:
     bootswatch: darkly
 development:
-  mode: devel
   repo: https://github.com/amanda-park/easytidymodels
 reference:
 - title: "Data Preprocessing"
