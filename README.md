@@ -8,9 +8,18 @@
 <!-- badges: end -->
 
 The goal of easytidymodels is to make running analyses in R using the
-tidymodels framework even easier. This is custom code I wrote to make
-the code more reproducible and avoid copy-pasting so often. Note: this
-is currently a work in progress\!
+tidymodels framework both easier and more reproducible. This is a
+wrapper for the tidymodels packages so that, after your data
+pre-processing steps, it all runs in one line of code and automatically
+tunes all the hyperparameters that are offered.
+
+If you are not familiar with tidymodels, I recommend learning more
+[here](https://www.tidymodels.org/) or [here](https://www.tmwr.org/).
+
+For more details on how the functions work in this package, I recommend
+checking out the reference page, referencing the vignettes on this site,
+or calling help on the function of interest in R to learn more. Here I
+will just give a brief overview of the workflow of this package.
 
 ## Installation
 
@@ -23,263 +32,109 @@ devtools::install_github("amanda-park/easytidymodels")
 
 ## Preparing Data for Analysis
 
-This is a basic example of one splitting data in the package.
+There are three main functions to prepare your data for analysis:
 
-  - The function trainTestSplit is a wrapper for rsample’s function that
-    allow you to nicely split up your data into training and testing
-    sets. For reusability’s sake it has been put into a function here.
-  - The function cvFolds is a wrapper for rsample’s vfold\_cv.
-  - The function createRecipe just creates a simple recipe of your
-    dataset. If more advanced recipes are required, I recommend calling
-    recipe() and creating one specific to your dataset’s needs.
+  - **trainTestSplit** lets you split data into training and testing
+    sets, with the ability to stratify on a variable and split based on
+    a point in time.
+  - **cvFolds** splits your data into cross-validation folds to allow
+    the model’s hyperparameters to be tuned.
+  - **createRecipe** does some basic data preprocessing on your dataset.
+    NOTE: I recommend calling recipe() and creating a recipe object
+    specific to your dataset’s needs, as every dataset will require its
+    own preprocessing prior to analysis.
 
-<!-- end list -->
+## Classification Functions
 
-``` r
-library(easytidymodels)
+The binary classification machine learning models available are as
+follows:
 
-#Simulate data
-df <- data.frame(var1 = as.factor(c(rep(1, 50), rep(0, 50))),
-                 var2 = rnorm(100),
-                 var3 = c(rnorm(55), rnorm(45, 5)),
-                 var4 = rnorm(100),
-                 var5 = c(rnorm(60), rnorm(40, 3)),
-                 var6 = as.factor(c(rep(0, 20), rep(1, 40), rep(2, 40))))
+  - XGBoost (function **xgBinaryClassif**)
+  - Logistic Regression (function **logRegBinary**)
+  - K-Nearest Neighbors (function **knnClassif**)
+  - Support Vector Machine (function **svmClassif**)
 
-#Set response variable
-resp <- "var6"
+The multiclass classifications available are as follows:
 
+  - XGBoost (function **xgMultiClassif**)
+  - Multinomial Regression (function **logRegMulti**)
+  - K-Nearest Neighbors (function **knnClassif**)
+  - Support Vector Machine (function **svmClassif**)
 
-split <- trainTestSplit(data = df, 
-                        responseVar = resp)
+Each of these models will tune the appropriate hyperparameters in the
+mode. However, these models allow for optimizing hyperparameters based
+on a specific evaluation metric. The list of metrics are as follows:
 
-#Create simple recipe object
-rec <- createRecipe(split$train, 
-                    responseVar = resp)
+  - [Balanced
+    Accuracy](https://yardstick.tidymodels.org/reference/bal_accuracy.html)
+    (Average of Sensitivity and Specificity, call “bal\_accuracy”)
+  - [Mean Log
+    Loss](https://yardstick.tidymodels.org/reference/mn_log_loss.html)
+    (Call “mn\_log\_loss”)
+  - [ROC AUC](https://yardstick.tidymodels.org/reference/roc_auc.html)
+    (Area Under the Receiver Operating Curve, call “roc\_auc”)
+  - [MCC](https://yardstick.tidymodels.org/reference/mcc.html)
+    (Matthew’s Correlation Coefficient, call “mcc”)
+  - [Kappa](https://yardstick.tidymodels.org/reference/kap.html)
+    (Normalized Accuracy, call “kap”)
+  - [Sensitivity](https://yardstick.tidymodels.org/reference/sens.html)
+    (Call “sens”)
+  - [Specificity](https://yardstick.tidymodels.org/reference/spec.html)
+    (Call “spec”)
+  - [Precision](https://yardstick.tidymodels.org/reference/precision.html)
+    (Call “precision”)
+  - [Recall](https://yardstick.tidymodels.org/reference/recall.html)
+    (Call “recall”)
 
-#Create training, testing, and bootstrapped data sets
-train_df <- recipes::bake(rec, split$train)
-test_df <- recipes::bake(rec, split$test)
-boot_df <- split$boot
+Save the model output to an object; the model will return the following
+in a list (can be accessed using $):
 
-#Create cross-validation folds
-folds <- cvFolds(train_df, 5)
-```
+  - Confusion matrix on training data
+  - Accuracy evaluation on training data
+  - Confusion matrix on testing data
+  - Accuracy evaluation on testing data
+  - Description of final model chosen
+  - A tuned version of the model (in the case you want to try model
+    stacking or seeing the optimal model fit based on a different
+    evaluation metric)
 
-## Classification Examples
+## Regression Functions
 
-### Logistic Regression
+The regression functions available are as follows:
 
-Tunes both the penalty and mixture terms, fits a model based on the
-classification evaluation metric specified (default bal\_accuracy), and
-returns an evaluation of the model on both the training and testing
-data.
+  - Random Forest (function **rfRegress**)
+  - XGBoost (function **xgRegress**)
+  - Linear Regression (function **linearRegress**)
+  - MARS (function **marsRegress**)
+  - K-Nearest Neighbor Regression (function **knnRegress**)
+  - Support Vector Machine Regression (function **svmRegress**)
 
-``` r
-# #Run logistic regression - only commented to avoid readme error
-# lr <- logRegBinary(recipe = rec,
-#                    response = resp,
-#                    folds = folds,
-#                    train = train_df,
-#                    test = test_df)
+These models allow for optimizing hyperparameters based on a specific
+evaluation metric as well. The list of metrics are as follows:
 
-# #Shows training and testing data confusion matrix
-# lr$trainConfMat
-# lr$testConfMat
-#
-# #Shows training data confusion matrix plot
-# lr$trainConfMatPlot
-# lr$testConfMatPlot
-#
-# #Shows training data score based on classification metrics
-# lr$trainScore
-# lr$testScore
-#
-# #Shows actual predictions for training and testing
-# lr$trainPred
-# lr$testPred
-#
-# #Shows tuned model optimized on evaluation metric chosen
-# lr$final
-```
+  - [RMSE](https://yardstick.tidymodels.org/reference/rmse.html) (Root
+    Mean Squared Error, call “rmse”)
+  - [MAE](https://yardstick.tidymodels.org/reference/mae.html) (Mean
+    Absolute Error, call “mae”)
+  - [RSQ](https://yardstick.tidymodels.org/reference/rsq.html)
+    (R-Squared, call “rsq”)
+  - [MASE](https://yardstick.tidymodels.org/reference/mase.html) (Mean
+    Absolute Scaled Error, call “mase”)
+  - [CCC](https://yardstick.tidymodels.org/reference/ccc.html)
+    (Concordance Correlation Coefficient, call “ccc”)
+  - [IIC](https://yardstick.tidymodels.org/reference/iic.html) (Index of
+    Ideality of Correlation, call “iic”)
+  - [HUBER\_LOSS](https://yardstick.tidymodels.org/reference/huber_loss.html)
+    (Huber loss, call “huber\_loss”)
 
-### KNN Classification
+Save the model output to an object; the model will return the following
+in a list (can be accessed using $):
 
-``` r
-# knnClass <- knnClassif(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   evalMetric = "bal_accuracy"
-# )
-```
-
-### SVM Classification
-
-``` r
-# svmClass <- svmClassif(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   evalMetric = "bal_accuracy"
-# )
-```
-
-### XGBoost
-
-Tunes the following:
-
-  - learn\_rate (or eta)
-
-  - sample\_size (or subsample)
-
-  - mtry (or colsample\_bytree)
-
-  - min\_n (or min\_child\_weight)
-
-  - tree\_depth (or max\_dept)
-
-Fits a model based on the classification evaluation metric specified
-(default bal\_accuracy), returns an evaluation of the model on both the
-training and testing data, and also returns variable importance for the
-model.
-
-``` r
-#XGBoost classification
-# xgClass <- xgBinaryClassif(
-#                    recipe = rec,
-#                    response = resp,
-#                    folds = folds,
-#                    train = train_df,
-#                    test = test_df,
-#                    evalMetric = "roc_auc"
-#                    )
-# 
-# #All the same functions for logistic regression work here, but also others:
-# 
-# #Feature importance plot
-# xgClass$featImpPlot
-# 
-# #Feature importance variables
-# xgClass$featImpVars
-```
-
-## Multiclass Classification
-
-### Multinomial Regression
-
-``` r
-# mr <- logRegMulti(
-#                    recipe = rec,
-#                    response = resp,
-#                    folds = folds,
-#                    train = train_df,
-#                    test = test_df
-#                    )
-```
-
-### XGBoost Multiclass Classifcation
-
-``` r
-# xgMult <- xgMultiClassif(
-#                    recipe = rec,
-#                    response = resp,
-#                    folds = folds,
-#                    train = train_df,
-#                    test = test_df
-#                    )
-```
-
-## Regression
-
-### Linear Regression
-
-``` r
-# linReg <- linearRegress(
-#   response = resp,
-#   data = df,
-#   train = train_df,
-#   test = test_df,
-#   tidyModelVersion = TRUE,
-#   recipe = rec,
-#   folds = folds,
-#   evalMetric = "rmse"
-# )
-```
-
-### MARS
-
-``` r
-# mars <- marsRegress(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   evalMetric = "mae"
-# )
-```
-
-### XGBoost
-
-``` r
-# xgReg <- xgRegress(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   calcFeatImp = TRUE,
-#   evalMetric = "mae"
-# )
-# 
-# #Show accuracy metrics testing data
-# xgReg$testScore
-# 
-# #Feature importance plot
-# xgReg$featImpPlot
-```
-
-### Random Forest Regression
-
-``` r
-# rfReg <- rfRegress(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   calcFeatImp = TRUE,
-#   evalMetric = "mae"
-# )
-```
-
-### Support Vector Machine
-
-``` r
-# svmReg <- svmRegress(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   evalMetric = "rmse"
-# )
-```
-
-### KNN Regression
-
-``` r
-# knnReg <- knnRegress(
-#   recipe = rec,
-#   response = resp,
-#   folds = folds,
-#   train = train_df,
-#   test = test_df,
-#   evalMetric = "rmse"
-# )
-```
+  - Predictions on training data
+  - RMSE and MAE evaluation on training data
+  - Predictions on testing data
+  - RMSE and MAE evaluation on testing data
+  - Description of final model chosen
+  - A tuned version of the model (in the case you want to try model
+    stacking or seeing the optimal model fit based on a different
+    evaluation metric)
