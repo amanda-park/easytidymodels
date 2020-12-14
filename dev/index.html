@@ -78,7 +78,119 @@
 <div id="easytidymodels" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#easytidymodels" class="anchor"></a>easytidymodels</h1></div>
-<p>The goal of easytidymodels is to make running analyses in R using the tidymodels framework even easier. This is custom code I wrote to make the code more reproducible and avoid copy-pasting so often. Note: this is currently a work in progress!</p>
+<!-- badges: start -->
+<!-- badges: end -->
+<p>The goal of easytidymodels is to make running analyses in R using the tidymodels framework both easier and more reproducible. This is a wrapper for the tidymodels packages so that, after your data pre-processing steps, it all runs in one line of code and automatically tunes all the hyperparameters that are offered.</p>
+<p>If you are not familiar with tidymodels, I recommend learning more <a href="https://www.tidymodels.org/">here</a> or <a href="https://www.tmwr.org/">here</a>.</p>
+<p>For more details on how the functions work in this package, I recommend checking out the reference page, referencing the vignettes on this site, or calling help on the function of interest in R to learn more. Here I will just give a brief overview of the workflow of this package.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install easytidymodels like this:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"amanda-park/easytidymodels"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="preparing-data-for-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preparing-data-for-analysis" class="anchor"></a>Preparing Data for Analysis</h2>
+<p>There are three main functions to prepare your data for analysis:</p>
+<ul>
+<li>
+<strong>trainTestSplit</strong> lets you split data into training and testing sets, with the ability to stratify on a variable and split based on a point in time.</li>
+<li>
+<strong>cvFolds</strong> splits your data into cross-validation folds to allow the model’s hyperparameters to be tuned.</li>
+<li>
+<strong>createRecipe</strong> does some basic data preprocessing on your dataset. NOTE: I recommend calling recipe() and creating a recipe object specific to your dataset’s needs, as every dataset will require its own preprocessing prior to analysis.</li>
+</ul>
+</div>
+<div id="classification-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#classification-functions" class="anchor"></a>Classification Functions</h2>
+<p>The binary classification machine learning models available are as follows:</p>
+<ul>
+<li>XGBoost (function <strong>xgBinaryClassif</strong>)</li>
+<li>Logistic Regression (function <strong>logRegBinary</strong>)</li>
+<li>K-Nearest Neighbors (function <strong>knnClassif</strong>)</li>
+<li>Support Vector Machine (function <strong>svmClassif</strong>)</li>
+</ul>
+<p>The multiclass classifications available are as follows:</p>
+<ul>
+<li>XGBoost (function <strong>xgMultiClassif</strong>)</li>
+<li>Multinomial Regression (function <strong>logRegMulti</strong>)</li>
+<li>K-Nearest Neighbors (function <strong>knnClassif</strong>)</li>
+<li>Support Vector Machine (function <strong>svmClassif</strong>)</li>
+</ul>
+<p>Each of these models will tune the appropriate hyperparameters in the mode. However, these models allow for optimizing hyperparameters based on a specific evaluation metric. The list of metrics are as follows:</p>
+<ul>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/bal_accuracy.html">Balanced Accuracy</a> (Average of Sensitivity and Specificity, call “bal_accuracy”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/mn_log_loss.html">Mean Log Loss</a> (Call “mn_log_loss”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/roc_auc.html">ROC AUC</a> (Area Under the Receiver Operating Curve, call “roc_auc”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/mcc.html">MCC</a> (Matthew’s Correlation Coefficient, call “mcc”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/kap.html">Kappa</a> (Normalized Accuracy, call “kap”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/sens.html">Sensitivity</a> (Call “sens”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/spec.html">Specificity</a> (Call “spec”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/precision.html">Precision</a> (Call “precision”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/recall.html">Recall</a> (Call “recall”)</li>
+</ul>
+<p>Save the model output to an object; the model will return the following in a list (can be accessed using $):</p>
+<ul>
+<li>Confusion matrix on training data</li>
+<li>Accuracy evaluation on training data</li>
+<li>Confusion matrix on testing data</li>
+<li>Accuracy evaluation on testing data</li>
+<li>Description of final model chosen</li>
+<li>A tuned version of the model (in the case you want to try model stacking or seeing the optimal model fit based on a different evaluation metric)</li>
+</ul>
+</div>
+<div id="regression-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#regression-functions" class="anchor"></a>Regression Functions</h2>
+<p>The regression functions available are as follows:</p>
+<ul>
+<li>Random Forest (function <strong>rfRegress</strong>)</li>
+<li>XGBoost (function <strong>xgRegress</strong>)</li>
+<li>Linear Regression (function <strong>linearRegress</strong>)</li>
+<li>MARS (function <strong>marsRegress</strong>)</li>
+<li>K-Nearest Neighbor Regression (function <strong>knnRegress</strong>)</li>
+<li>Support Vector Machine Regression (function <strong>svmRegress</strong>)</li>
+</ul>
+<p>These models allow for optimizing hyperparameters based on a specific evaluation metric as well. The list of metrics are as follows:</p>
+<ul>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/rmse.html">RMSE</a> (Root Mean Squared Error, call “rmse”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/mae.html">MAE</a> (Mean Absolute Error, call “mae”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/rsq.html">RSQ</a> (R-Squared, call “rsq”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/mase.html">MASE</a> (Mean Absolute Scaled Error, call “mase”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/ccc.html">CCC</a> (Concordance Correlation Coefficient, call “ccc”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/iic.html">IIC</a> (Index of Ideality of Correlation, call “iic”)</li>
+<li>
+<a href="https://yardstick.tidymodels.org/reference/huber_loss.html">HUBER_LOSS</a> (Huber loss, call “huber_loss”)</li>
+</ul>
+<p>Save the model output to an object; the model will return the following in a list (can be accessed using $):</p>
+<ul>
+<li>Predictions on training data</li>
+<li>RMSE and MAE evaluation on training data</li>
+<li>Predictions on testing data</li>
+<li>RMSE and MAE evaluation on testing data</li>
+<li>Description of final model chosen</li>
+<li>A tuned version of the model (in the case you want to try model stacking or seeing the optimal model fit based on a different evaluation metric)</li>
+</ul>
+</div>
 </div>
   </div>
 
