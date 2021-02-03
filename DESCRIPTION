@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Amanda",
            family = "Park",
            role = c("aut", "cre"),
-           email = "AmandaParkDev@gmail.com"
+           email = "AmandaParkDev@gmail.com")
 Description: Tidymodels is an incredibly useful framework to making end to end machine learning analyses. Since the process follows a preplanned framework, the process can be further streamlined to make analysis even simpler and easier to reproduce. 
 License: MIT + file LICENSE
 Encoding: UTF-8
