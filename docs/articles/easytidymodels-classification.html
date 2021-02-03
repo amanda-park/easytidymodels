@@ -202,13 +202,13 @@
 <span class="co">#Visualize training data and its predictions</span>
 <span class="va">knnClass</span><span class="op">$</span><span class="va">trainConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">knnClass</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
 <span class="va">knnClass</span><span class="op">$</span><span class="va">testConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">knnClass</span><span class="op">$</span><span class="va">testScore</span>
 
 <span class="co">#See the final model chosen by KNN based on optimizing for your chosen evaluation metric</span>
@@ -241,11 +241,23 @@
 <span class="co">#Plot of confusion matrix</span>
 <span class="va">lr</span><span class="op">$</span><span class="va">trainConfMatPlot</span>
 
+<span class="co">#Train Score</span>
+<span class="va">lr</span><span class="op">$</span><span class="va">trainScore</span>
+
 <span class="co">#Test Confusion Matrix</span>
 <span class="va">lr</span><span class="op">$</span><span class="va">testConfMat</span>
 
 <span class="co">#Test Confusion Matrix Plot</span>
-<span class="va">lr</span><span class="op">$</span><span class="va">testConfMatPlot</span></code></pre></div>
+<span class="va">lr</span><span class="op">$</span><span class="va">testConfMatPlot</span>
+
+<span class="co">#Test Score</span>
+<span class="va">lr</span><span class="op">$</span><span class="va">testScore</span>
+
+<span class="co">#See the final model chosen by svm based on optimizing for your chosen evaluation metric</span>
+<span class="va">lr</span><span class="op">$</span><span class="va">final</span>
+
+<span class="co">#See how model fit looks based on another evaluation metric</span>
+<span class="va">lr</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"roc_auc"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="fit-a-support-vector-machine-radial-basis-kernel-model" class="section level2">
 <h2 class="hasAnchor">
@@ -272,13 +284,13 @@
 <span class="co">#Visualize training data and its predictions</span>
 <span class="va">svmClass</span><span class="op">$</span><span class="va">trainConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">svmClass</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
 <span class="va">svmClass</span><span class="op">$</span><span class="va">testConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">svmClass</span><span class="op">$</span><span class="va">testScore</span>
 
 <span class="co">#See the final model chosen by svm based on optimizing for your chosen evaluation metric</span>
@@ -325,13 +337,13 @@
 <span class="co">#Visualize training data and its predictions</span>
 <span class="va">xgClass</span><span class="op">$</span><span class="va">trainConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">xgClass</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
 <span class="va">xgClass</span><span class="op">$</span><span class="va">testConfMat</span>
 
-<span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
+<span class="co">#View model metrics for accuracy and kappa</span>
 <span class="va">xgClass</span><span class="op">$</span><span class="va">testScore</span>
 
 <span class="co">#See the final model chosen by svm based on optimizing for your chosen evaluation metric</span>
