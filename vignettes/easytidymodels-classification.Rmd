@@ -124,13 +124,13 @@ knnClass <- knnClassif(
 #Visualize training data and its predictions
 knnClass$trainConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#View model metrics for accuracy and kappa
 knnClass$trainScore
 
 #Visualize testing data and its predictions
 knnClass$testConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#View model metrics for accuracy and kappa
 knnClass$testScore
 
 #See the final model chosen by KNN based on optimizing for your chosen evaluation metric
@@ -162,11 +162,23 @@ lr$trainConfMat
 #Plot of confusion matrix
 lr$trainConfMatPlot
 
+#Train Score
+lr$trainScore
+
 #Test Confusion Matrix
 lr$testConfMat
 
 #Test Confusion Matrix Plot
 lr$testConfMatPlot
+
+#Test Score
+lr$testScore
+
+#See the final model chosen by svm based on optimizing for your chosen evaluation metric
+lr$final
+
+#See how model fit looks based on another evaluation metric
+lr$tune %>% tune::show_best("roc_auc")
 ```
 
 ## Fit a Support Vector Machine (Radial Basis Kernel) Model
@@ -193,13 +205,13 @@ svmClass <- svmClassif(
 #Visualize training data and its predictions
 svmClass$trainConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#View model metrics for accuracy and kappa
 svmClass$trainScore
 
 #Visualize testing data and its predictions
 svmClass$testConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#View model metrics for accuracy and kappa
 svmClass$testScore
 
 #See the final model chosen by svm based on optimizing for your chosen evaluation metric
@@ -240,13 +252,13 @@ xgClass <- xgBinaryClassif(
 #Visualize training data and its predictions
 xgClass$trainConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for training data
+#View model metrics for accuracy and kappa
 xgClass$trainScore
 
 #Visualize testing data and its predictions
 xgClass$testConfMat
 
-#View how model metrics for RMSE, R-Squared, and MAE look for testing data
+#View model metrics for accuracy and kappa
 xgClass$testScore
 
 #See the final model chosen by svm based on optimizing for your chosen evaluation metric
