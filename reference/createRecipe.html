@@ -180,29 +180,12 @@
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>penguins</span>, package <span class='op'>=</span> <span class='st'>"modeldata"</span><span class='op'>)</span>
-<span class='va'>resp</span> <span class='op'>&lt;-</span> <span class='st'>"sex"</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in find.package(package, lib.loc, verbose = verbose): there is no package called ‘modeldata’</span></div><div class='input'><span class='va'>resp</span> <span class='op'>&lt;-</span> <span class='st'>"sex"</span>
 <span class='va'>split</span> <span class='op'>&lt;-</span> <span class='fu'><a href='trainTestSplit.html'>trainTestSplit</a></span><span class='op'>(</span><span class='va'>penguins</span>, stratifyOnResponse <span class='op'>=</span> <span class='cn'>TRUE</span>, responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='op'>)</span>
-<span class='va'>formula</span> <span class='op'>&lt;-</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>as.formula</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>resp</span>, <span class='st'>"."</span>, sep<span class='op'>=</span><span class='st'>"~"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in eval_select_impl(NULL, .vars, expr(c(!!!dots)), include = .include,     exclude = .exclude, strict = .strict, name_spec = unique_name_spec,     uniquely_named = TRUE): object 'penguins' not found</span></div><div class='input'><span class='va'>formula</span> <span class='op'>&lt;-</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>as.formula</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>resp</span>, <span class='st'>"."</span>, sep<span class='op'>=</span><span class='st'>"~"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>rec</span> <span class='op'>&lt;-</span> <span class='fu'>createRecipe</span><span class='op'>(</span><span class='va'>split</span><span class='op'>$</span><span class='va'>train</span>, responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='op'>)</span>
-<span class='va'>rec</span>
-</div><div class='output co'>#&gt; Data Recipe
-#&gt; 
-#&gt; Inputs:
-#&gt; 
-#&gt;       role #variables
-#&gt;    outcome          1
-#&gt;  predictor          6
-#&gt; 
-#&gt; Training data contained 276 data points and 8 incomplete rows. 
-#&gt; 
-#&gt; Operations:
-#&gt; 
-#&gt; Unknown factor level assignment for species, island, sex [trained]
-#&gt; Centering and scaling for bill_length_mm, ... [trained]
-#&gt; Collapsing factor levels for species, island [trained]
-#&gt; Sparse, unbalanced variable filter removed no terms [trained]
-#&gt; Correlation filter removed no terms [trained]
-#&gt; Dummy variables from species, island [trained]</div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in split$train: object of type 'closure' is not subsettable</span></div><div class='input'><span class='va'>rec</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'rec' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

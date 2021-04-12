@@ -173,61 +173,20 @@
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>easytidymodels</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='fu'>utils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>penguins</span>, package <span class='op'>=</span> <span class='st'>"modeldata"</span><span class='op'>)</span>
-<span class='va'>resp</span> <span class='op'>&lt;-</span> <span class='st'>"sex"</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in find.package(package, lib.loc, verbose = verbose): there is no package called ‘modeldata’</span></div><div class='input'><span class='va'>resp</span> <span class='op'>&lt;-</span> <span class='st'>"sex"</span>
 <span class='va'>split</span> <span class='op'>&lt;-</span> <span class='fu'>trainTestSplit</span><span class='op'>(</span><span class='va'>penguins</span>, stratifyOnResponse <span class='op'>=</span> <span class='cn'>TRUE</span>, responseVar <span class='op'>=</span> <span class='va'>resp</span><span class='op'>)</span>
-<span class='co'>#Training data</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in eval_select_impl(NULL, .vars, expr(c(!!!dots)), include = .include,     exclude = .exclude, strict = .strict, name_spec = unique_name_spec,     uniquely_named = TRUE): object 'penguins' not found</span></div><div class='input'><span class='co'>#Training data</span>
 <span class='va'>split</span><span class='op'>$</span><span class='va'>train</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 276 x 7</span><span>
-#&gt;    species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Adelie  Torge…           39.5          17.4              186        </span><span style='text-decoration: underline;'>3</span><span>800
-#&gt; </span><span style='color: #555555;'> 2</span><span> Adelie  Torge…           40.3          18                195        </span><span style='text-decoration: underline;'>3</span><span>250
-#&gt; </span><span style='color: #555555;'> 3</span><span> Adelie  Torge…           </span><span style='color: #BB0000;'>NA</span><span>            </span><span style='color: #BB0000;'>NA</span><span>                 </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span> Adelie  Torge…           36.7          19.3              193        </span><span style='text-decoration: underline;'>3</span><span>450
-#&gt; </span><span style='color: #555555;'> 5</span><span> Adelie  Torge…           39.3          20.6              190        </span><span style='text-decoration: underline;'>3</span><span>650
-#&gt; </span><span style='color: #555555;'> 6</span><span> Adelie  Torge…           39.2          19.6              195        </span><span style='text-decoration: underline;'>4</span><span>675
-#&gt; </span><span style='color: #555555;'> 7</span><span> Adelie  Torge…           34.1          18.1              193        </span><span style='text-decoration: underline;'>3</span><span>475
-#&gt; </span><span style='color: #555555;'> 8</span><span> Adelie  Torge…           42            20.2              190        </span><span style='text-decoration: underline;'>4</span><span>250
-#&gt; </span><span style='color: #555555;'> 9</span><span> Adelie  Torge…           37.8          17.1              186        </span><span style='text-decoration: underline;'>3</span><span>300
-#&gt; </span><span style='color: #555555;'>10</span><span> Adelie  Torge…           37.8          17.3              180        </span><span style='text-decoration: underline;'>3</span><span>700
-#&gt; </span><span style='color: #555555;'># … with 266 more rows, and 1 more variable: sex </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in split$train: object of type 'closure' is not subsettable</span></div><div class='input'>
 <span class='co'>#Testing data</span>
 <span class='va'>split</span><span class='op'>$</span><span class='va'>test</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 68 x 7</span><span>
-#&gt;    species island bill_length_mm bill_depth_mm flipper_length_… body_mass_g
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Adelie  Torge…           39.1          18.7              181        </span><span style='text-decoration: underline;'>3</span><span>750
-#&gt; </span><span style='color: #555555;'> 2</span><span> Adelie  Torge…           38.9          17.8              181        </span><span style='text-decoration: underline;'>3</span><span>625
-#&gt; </span><span style='color: #555555;'> 3</span><span> Adelie  Torge…           46            21.5              194        </span><span style='text-decoration: underline;'>4</span><span>200
-#&gt; </span><span style='color: #555555;'> 4</span><span> Adelie  Biscoe           35.3          18.9              187        </span><span style='text-decoration: underline;'>3</span><span>800
-#&gt; </span><span style='color: #555555;'> 5</span><span> Adelie  Biscoe           40.6          18.6              183        </span><span style='text-decoration: underline;'>3</span><span>550
-#&gt; </span><span style='color: #555555;'> 6</span><span> Adelie  Biscoe           40.5          17.9              187        </span><span style='text-decoration: underline;'>3</span><span>200
-#&gt; </span><span style='color: #555555;'> 7</span><span> Adelie  Dream            39.5          16.7              178        </span><span style='text-decoration: underline;'>3</span><span>250
-#&gt; </span><span style='color: #555555;'> 8</span><span> Adelie  Dream            37.2          18.1              178        </span><span style='text-decoration: underline;'>3</span><span>900
-#&gt; </span><span style='color: #555555;'> 9</span><span> Adelie  Dream            36.4          17                195        </span><span style='text-decoration: underline;'>3</span><span>325
-#&gt; </span><span style='color: #555555;'>10</span><span> Adelie  Dream            39.2          21.1              196        </span><span style='text-decoration: underline;'>4</span><span>150
-#&gt; </span><span style='color: #555555;'># … with 58 more rows, and 1 more variable: sex </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in split$test: object of type 'closure' is not subsettable</span></div><div class='input'>
 <span class='co'>#Bootstrapped data</span>
 <span class='va'>split</span><span class='op'>$</span><span class='va'>boot</span>
-</div><div class='output co'>#&gt; # Bootstrap sampling 
-#&gt; </span><span style='color: #555555;'># A tibble: 25 x 2</span><span>
-#&gt;    splits            id         
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #555555;'> 1</span><span> </span><span style='color: #555555;'>&lt;split [276/107]&gt;</span><span> Bootstrap01
-#&gt; </span><span style='color: #555555;'> 2</span><span> </span><span style='color: #555555;'>&lt;split [276/104]&gt;</span><span> Bootstrap02
-#&gt; </span><span style='color: #555555;'> 3</span><span> </span><span style='color: #555555;'>&lt;split [276/107]&gt;</span><span> Bootstrap03
-#&gt; </span><span style='color: #555555;'> 4</span><span> </span><span style='color: #555555;'>&lt;split [276/94]&gt;</span><span>  Bootstrap04
-#&gt; </span><span style='color: #555555;'> 5</span><span> </span><span style='color: #555555;'>&lt;split [276/102]&gt;</span><span> Bootstrap05
-#&gt; </span><span style='color: #555555;'> 6</span><span> </span><span style='color: #555555;'>&lt;split [276/92]&gt;</span><span>  Bootstrap06
-#&gt; </span><span style='color: #555555;'> 7</span><span> </span><span style='color: #555555;'>&lt;split [276/97]&gt;</span><span>  Bootstrap07
-#&gt; </span><span style='color: #555555;'> 8</span><span> </span><span style='color: #555555;'>&lt;split [276/103]&gt;</span><span> Bootstrap08
-#&gt; </span><span style='color: #555555;'> 9</span><span> </span><span style='color: #555555;'>&lt;split [276/100]&gt;</span><span> Bootstrap09
-#&gt; </span><span style='color: #555555;'>10</span><span> </span><span style='color: #555555;'>&lt;split [276/107]&gt;</span><span> Bootstrap10
-#&gt; </span><span style='color: #555555;'># … with 15 more rows</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in split$boot: object of type 'closure' is not subsettable</span></div><div class='input'>
 <span class='co'>#Split object (helpful to call if you want to do model stacking)</span>
 <span class='va'>split</span><span class='op'>$</span><span class='va'>split</span>
-</div><div class='output co'>#&gt; &lt;Analysis/Assess/Total&gt;
-#&gt; &lt;276/68/344&gt;</div></span></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in split$split: object of type 'closure' is not subsettable</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
