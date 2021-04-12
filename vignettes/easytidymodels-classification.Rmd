@@ -70,14 +70,13 @@ rec <- recipe(formula, data = split$train) %>%
   step_dummy(all_nominal(), -all_outcomes()) %>% 
   step_medianimpute(all_predictors()) %>% 
   step_normalize(all_predictors()) %>%
-  step_dummy(all_nominal(), -all_outcomes()) %>%
   step_nzv(all_predictors()) %>%
   step_corr(all_numeric(), -all_outcomes(), threshold = .8) %>%
   prep()
 
 train_df <- bake(rec, split$train)
 test_df <- bake(rec, split$test)
-
+#df <- rbind(train_df, test_df)
 folds <- cvFolds(train_df)
 ```
 
@@ -266,6 +265,17 @@ xgClass$final
 
 #See how model fit looks based on another evaluation metric
 xgClass$tune %>% tune::show_best("bal_accuracy")
+
+# ROC-AUC on CV Folds Example
+res <- xgClass$tune %>%
+  collect_predictions() %>%
+  group_by(id) %>%
+  roc_curve(!!resp, .pred_female) 
+
+ggplot(res, aes(1 - specificity, sensitivity, color = id)) +
+  geom_abline(lty = 2, color = "gray80", size = 1.5) +
+  geom_path(show.legend = TRUE, alpha = 0.6, size = 1.2) +
+  coord_equal() 
 
 #Feature importance plot
 xgClass$featImpPlot
