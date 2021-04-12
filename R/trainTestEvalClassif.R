@@ -19,7 +19,7 @@ trainTestEvalClassif <- function(final = final,
   trainConfMat <- trainPred %>%
     yardstick::conf_mat(truth = !!response, estimate = .pred_class)
 
-  trainConfMatPlot <- autoplot(trainConfMat, type = "heatmap")
+  trainConfMatPlot <- ggplot2::autoplot(trainConfMat, type = "heatmap")
 
   testPred <- final %>%
     parsnip::fit(
@@ -35,7 +35,7 @@ trainTestEvalClassif <- function(final = final,
   testConfMat <- testPred %>%
     yardstick::conf_mat(truth = !!response, estimate = .pred_class)
 
-  testConfMatPlot <- autoplot(testConfMat, type = "heatmap")
+  testConfMatPlot <- ggplot2::autoplot(testConfMat, type = "heatmap")
 
   output <- list(
     "trainPred" = trainPred,
