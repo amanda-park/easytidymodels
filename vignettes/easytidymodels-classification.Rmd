@@ -27,7 +27,7 @@ Some things to note:
 set.seed(24)
 
 # install.packages("devtools")
-# devtools::install_github("amanda-park/easytidymodels")
+devtools::install_github("amanda-park/easytidymodels")
 library(easytidymodels)
 library(recipes)
 library(doParallel)
@@ -267,15 +267,24 @@ xgClass$final
 xgClass$tune %>% tune::show_best("bal_accuracy")
 
 # ROC-AUC on CV Folds Example
-res <- xgClass$tune %>%
+xgClass$tune %>%
   collect_predictions() %>%
   group_by(id) %>%
-  roc_curve(!!resp, .pred_female) 
-
-ggplot(res, aes(1 - specificity, sensitivity, color = id)) +
+  yardstick::roc_curve(!!resp, .pred_female) %>%
+  ggplot(aes(1 - specificity, sensitivity, color = id)) +
   geom_abline(lty = 2, color = "gray80", size = 1.5) +
   geom_path(show.legend = TRUE, alpha = 0.6, size = 1.2) +
   coord_equal() 
+
+#Evaluate model parameters on specific metric
+xgClass$tune %>%
+  tune::show_best(metric = "roc_auc",n = 10) %>%
+  tidyr::pivot_longer(mtry:sample_size, names_to="variable",values_to="value" ) %>%
+  ggplot(aes(value,mean)) +
+  geom_line(alpha=1/2)+
+  geom_point()+
+  facet_wrap(~variable,scales = "free")+
+  ggtitle("Best parameters for ROC-AUC")
 
 #Feature importance plot
 xgClass$featImpPlot

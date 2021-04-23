@@ -1,0 +1,262 @@
+---
+title: "easytidymodels Classification Example"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Set up package and load in data for analysis
+
+Some things to note:
+
+* Generally, you want to set a seed so that your analysis is reproducible.
+* If easytidymodels isn't installed you can install it through devtools, which is on Github.
+* If you want to use the dataset provided here you will need to install modeldata.
+* Parallel computing is used through the doParallel library to speed up computations.
+
+```{r setup, eval = FALSE}
+set.seed(24)
+
+# install.packages("devtools")
+#devtools::install_github("amanda-park/easytidymodels")
+library(easytidymodels)
+library(recipes)
+library(doParallel)
+
+data(penguins, package = "modeldata")
+
+#Use parallel compute to speed up processing time
+cores <- parallel::detectCores(logical = FALSE)
+registerDoParallel(cores = cores)
+
+```
+
+## Prepare data for analysis with preprocessing
+
+Define your response variable and save it as resp.
+
+trainTestSplit is a wrapper for rsample's function to split your training and testing data. There is the option to split based on time dependency and to stratify on the response if you aren't splitting based on time.
+
+recipes are your model's preprocessing steps. This varies for each data set you work with the level of preprocessing you need, so instead this portion of tidymodels has not been given a wrapper. The available preprocessing steps that you can use in recipes can be seen [here](https://recipes.tidymodels.org/reference/index.html).
+
+After your recipe is set up, you can split your data into training and testing and then bake your recipe's preprocessing steps into the model.
+
+Lastly, you can set up a cross-validation fold object through the function cvFolds.
+
+These objects are all necessary for fitting the variety of models that tidymodels offers you.
+
+```{r eval = FALSE}
+#Define your response variable and formula object here
+resp <- "sex"
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Split data into training and testing sets
+split <- trainTestSplit(penguins,
+                        stratifyOnResponse = TRUE,
+                        responseVar = resp)
+
+#Create recipe for feature engineering for dataset, varies based on data working with
+rec <- recipe(formula, data = split$train) %>%
+  step_knnimpute(!!resp) %>% 
+  step_dummy(all_nominal(), -all_outcomes()) %>% 
+  step_medianimpute(all_predictors()) %>% 
+  step_normalize(all_predictors()) %>%
+  step_nzv(all_predictors()) %>%
+  step_corr(all_numeric(), -all_outcomes(), threshold = .8) %>%
+  prep()
+
+train_df <- bake(rec, split$train)
+test_df <- bake(rec, split$test)
+#df <- rbind(train_df, test_df)
+folds <- cvFolds(train_df)
+```
+
+## LightGBM Example
+
+Unfortunately this one is buggy and generally not working with the tidymodels framework nicely, so adding it to easytidymodels is currently on hold.
+
+```{r}
+#remotes::install_github("curso-r/treesnip")
+require(treesnip)
+require(lightgbm)
+
+# lgbmClass <- lgbmBinaryClassif(
+#                   recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df,
+#                    evalMetric = "roc_auc"
+# )
+
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Create model
+mod <- parsnip::boost_tree(min_n = tune(),
+                           tree_depth = tune(),
+                           mtry = tune(),
+                           trees = 100) %>%
+  parsnip::set_engine("lightgbm")
+
+#Set lightGBM parameters to tune
+params <- dials::parameters(
+  dials::min_n(),
+  dials::tree_depth(),
+  dials::finalize(dials::mtry(),dplyr::select(train_df,-matches(resp)), force = TRUE)
+)
+
+#Set XGBoost grid
+grid <- dials::grid_max_entropy(params, size = 10)
+
+  
+wflow <- workflows::workflow() %>%
+    workflows::add_model(mod) %>%
+    workflows::add_formula(formula)  
+
+tune <- tune::tune_grid(
+      wflow,
+      resamples = folds,
+      grid      = grid,
+      metrics   = yardstick::metric_set(
+        yardstick::bal_accuracy,
+        yardstick::mn_log_loss,
+        yardstick::kap,
+        yardstick::roc_auc,
+        yardstick::mcc,
+        yardstick::precision,
+        yardstick::recall,
+        yardstick::sens,
+        yardstick::spec),
+      control   = tune::control_grid(verbose = TRUE,
+                                     save_pred = TRUE,
+                                     save_workflow = TRUE,
+                                     allow_par = TRUE,
+                                     parallel_over = "everything")
+    )
+```
+
+## Catboost
+
+As far as I can tell Catboost is no longer available on CRAN, making it useless until further notice...
+
+```{r}
+#remotes::install_github("curso-r/treesnip")
+require(treesnip)
+
+# lgbmClass <- lgbmBinaryClassif(
+#                   recipe = rec,
+#                    response = resp,
+#                    folds = folds,
+#                    train = train_df,
+#                    test = test_df,
+#                    evalMetric = "roc_auc"
+# )
+
+formula <- stats::as.formula(paste(resp, ".", sep="~"))
+
+#Create model
+mod <- parsnip::boost_tree(min_n = tune(),
+                           tree_depth = tune(),
+                           mtry = tune(),
+                           trees = 100) %>%
+  parsnip::set_engine("catboost")
+
+#Set lightGBM parameters to tune
+params <- dials::parameters(
+  dials::min_n(),
+  dials::tree_depth(),
+  dials::finalize(dials::mtry(),dplyr::select(train_df,-matches(resp)), force = TRUE)
+)
+
+#Set XGBoost grid
+grid <- dials::grid_max_entropy(params, size = 10)
+
+wflow <- workflows::workflow() %>%
+    workflows::add_model(mod) %>%
+    workflows::add_formula(formula)  
+
+tune <- tune::tune_grid(
+      wflow,
+      resamples = folds,
+      grid      = grid,
+      metrics   = yardstick::metric_set(
+        yardstick::bal_accuracy,
+        yardstick::mn_log_loss,
+        yardstick::kap,
+        yardstick::roc_auc,
+        yardstick::mcc,
+        yardstick::precision,
+        yardstick::recall,
+        yardstick::sens,
+        yardstick::spec),
+      control   = tune::control_grid(verbose = TRUE,
+                                     save_pred = TRUE,
+                                     save_workflow = TRUE,
+                                     allow_par = TRUE,
+                                     parallel_over = "everything")
+    )
+```
+
+
+
+
+
+## TabNet
+
+Also gives an error... alas.
+
+```{r}
+require(tabnet)
+require(torch)
+
+mod <- tabnet(epochs = 50, batch_size = 128) %>%
+  set_engine("torch", verbose = TRUE) %>%
+  set_mode("classification")
+
+wflow <- workflows::workflow() %>%
+    workflows::add_model(mod) %>%
+    workflows::add_formula(formula) 
+
+fit_rs <- wflow %>%
+  fit_resamples(folds)
+```
+
+
+
+## QDA
+
+```{r}
+library(discrim)
+
+mod <- discrim::discrim_regularized(frac_common_cov = 0, frac_identity = 0) %>% 
+  parsnip::set_engine("klaR")
+
+wflow <- workflows::workflow() %>%
+    workflows::add_model(mod) %>%
+    workflows::add_formula(formula) 
+
+fit_rs <- wflow %>%
+  fit_resamples(folds,
+                metrics = yardstick::metric_set(
+        yardstick::bal_accuracy,
+        yardstick::mn_log_loss,
+        yardstick::kap,
+        yardstick::roc_auc,
+        yardstick::mcc,
+        yardstick::precision,
+        yardstick::recall,
+        yardstick::sens,
+        yardstick::spec),
+      control   = tune::control_grid(verbose = TRUE,
+                                   save_pred = TRUE,
+                                   save_workflow = TRUE,
+                                   allow_par = TRUE,
+                                   parallel_over = "everything"))
+
+collect_metrics(fit_rs)
+```
+
