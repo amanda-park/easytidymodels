@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Make tidymodels even easier to run • easytidymodels</title>
+<title>Make tidymodels even easier to run! • easytidymodels</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Make tidymodels even easier to run">
+<script src="pkgdown.js"></script><meta property="og:title" content="Make tidymodels even easier to run!">
 <meta property="og:description" content="Tidymodels is an incredibly useful framework to making end to end machine learning analyses. Since the process follows a preplanned framework, the process can be further streamlined to make analysis even simpler and easier to reproduce. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">easytidymodels</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -74,25 +70,25 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="easytidymodels" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#easytidymodels" class="anchor"></a>easytidymodels</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="easytidymodels">easytidymodels<a class="anchor" aria-label="anchor" href="#easytidymodels"></a>
+</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
 <p>The goal of easytidymodels is to make running analyses in R using the tidymodels framework both easier and more reproducible. This is a wrapper for the tidymodels packages so that, after your data pre-processing steps, it all runs in one line of code and automatically tunes all the hyperparameters that are offered.</p>
-<p>If you are not familiar with tidymodels, I recommend learning more <a href="https://www.tidymodels.org/">here</a> or <a href="https://www.tmwr.org/">here</a>.</p>
+<p>If you are not familiar with tidymodels, I recommend learning more <a href="https://www.tidymodels.org/" class="external-link">here</a> or <a href="https://www.tmwr.org/" class="external-link">here</a>.</p>
 <p>For more details on how the functions work in this package, I recommend checking out the reference page, referencing the vignettes on this site, or calling help on the function of interest in R to learn more. Here I will just give a brief overview of the workflow of this package.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>You can install easytidymodels like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"amanda-park/easytidymodels"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="preparing-data-for-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preparing-data-for-analysis" class="anchor"></a>Preparing Data for Analysis</h2>
+<div class="section level2">
+<h2 id="preparing-data-for-analysis">Preparing Data for Analysis<a class="anchor" aria-label="anchor" href="#preparing-data-for-analysis"></a>
+</h2>
 <p>There are three main functions to prepare your data for analysis:</p>
 <ul>
 <li>
@@ -103,9 +99,9 @@
 <strong>createRecipe</strong> does some basic data preprocessing on your dataset. NOTE: I recommend calling recipe() and creating a recipe object specific to your dataset’s needs, as every dataset will require its own preprocessing prior to analysis.</li>
 </ul>
 </div>
-<div id="classification-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#classification-functions" class="anchor"></a>Classification Functions</h2>
+<div class="section level2">
+<h2 id="classification-functions">Classification Functions<a class="anchor" aria-label="anchor" href="#classification-functions"></a>
+</h2>
 <p>The binary classification machine learning models available are as follows:</p>
 <ul>
 <li>XGBoost (function <strong>xgBinaryClassif</strong>)</li>
@@ -123,23 +119,23 @@
 <p>Each of these models will tune the appropriate hyperparameters in the mode. However, these models allow for optimizing hyperparameters based on a specific evaluation metric. The list of metrics are as follows:</p>
 <ul>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/bal_accuracy.html">Balanced Accuracy</a> (Average of Sensitivity and Specificity, call “bal_accuracy”)</li>
+<a href="https://yardstick.tidymodels.org/reference/bal_accuracy.html" class="external-link">Balanced Accuracy</a> (Average of Sensitivity and Specificity, call “bal_accuracy”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mn_log_loss.html">Mean Log Loss</a> (Call “mn_log_loss”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mn_log_loss.html" class="external-link">Mean Log Loss</a> (Call “mn_log_loss”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/roc_auc.html">ROC AUC</a> (Area Under the Receiver Operating Curve, call “roc_auc”)</li>
+<a href="https://yardstick.tidymodels.org/reference/roc_auc.html" class="external-link">ROC AUC</a> (Area Under the Receiver Operating Curve, call “roc_auc”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mcc.html">MCC</a> (Matthew’s Correlation Coefficient, call “mcc”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mcc.html" class="external-link">MCC</a> (Matthew’s Correlation Coefficient, call “mcc”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/kap.html">Kappa</a> (Normalized Accuracy, call “kap”)</li>
+<a href="https://yardstick.tidymodels.org/reference/kap.html" class="external-link">Kappa</a> (Normalized Accuracy, call “kap”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/sens.html">Sensitivity</a> (Call “sens”)</li>
+<a href="https://yardstick.tidymodels.org/reference/sens.html" class="external-link">Sensitivity</a> (Call “sens”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/spec.html">Specificity</a> (Call “spec”)</li>
+<a href="https://yardstick.tidymodels.org/reference/spec.html" class="external-link">Specificity</a> (Call “spec”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/precision.html">Precision</a> (Call “precision”)</li>
+<a href="https://yardstick.tidymodels.org/reference/precision.html" class="external-link">Precision</a> (Call “precision”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/recall.html">Recall</a> (Call “recall”)</li>
+<a href="https://yardstick.tidymodels.org/reference/recall.html" class="external-link">Recall</a> (Call “recall”)</li>
 </ul>
 <p>Save the model output to an object; the model will return the following in a list (can be accessed using $):</p>
 <ul>
@@ -151,9 +147,9 @@
 <li>A tuned version of the model (in the case you want to try model stacking or seeing the optimal model fit based on a different evaluation metric)</li>
 </ul>
 </div>
-<div id="regression-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#regression-functions" class="anchor"></a>Regression Functions</h2>
+<div class="section level2">
+<h2 id="regression-functions">Regression Functions<a class="anchor" aria-label="anchor" href="#regression-functions"></a>
+</h2>
 <p>The regression functions available are as follows:</p>
 <ul>
 <li>Random Forest (function <strong>rfRegress</strong>)</li>
@@ -166,19 +162,19 @@
 <p>These models allow for optimizing hyperparameters based on a specific evaluation metric as well. The list of metrics are as follows:</p>
 <ul>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/rmse.html">RMSE</a> (Root Mean Squared Error, call “rmse”)</li>
+<a href="https://yardstick.tidymodels.org/reference/rmse.html" class="external-link">RMSE</a> (Root Mean Squared Error, call “rmse”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mae.html">MAE</a> (Mean Absolute Error, call “mae”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mae.html" class="external-link">MAE</a> (Mean Absolute Error, call “mae”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/rsq.html">RSQ</a> (R-Squared, call “rsq”)</li>
+<a href="https://yardstick.tidymodels.org/reference/rsq.html" class="external-link">RSQ</a> (R-Squared, call “rsq”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mase.html">MASE</a> (Mean Absolute Scaled Error, call “mase”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mase.html" class="external-link">MASE</a> (Mean Absolute Scaled Error, call “mase”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/ccc.html">CCC</a> (Concordance Correlation Coefficient, call “ccc”)</li>
+<a href="https://yardstick.tidymodels.org/reference/ccc.html" class="external-link">CCC</a> (Concordance Correlation Coefficient, call “ccc”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/iic.html">IIC</a> (Index of Ideality of Correlation, call “iic”)</li>
+<a href="https://yardstick.tidymodels.org/reference/iic.html" class="external-link">IIC</a> (Index of Ideality of Correlation, call “iic”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/huber_loss.html">HUBER_LOSS</a> (Huber loss, call “huber_loss”)</li>
+<a href="https://yardstick.tidymodels.org/reference/huber_loss.html" class="external-link">HUBER_LOSS</a> (Huber loss, call “huber_loss”)</li>
 </ul>
 <p>Save the model output to an object; the model will return the following in a list (can be accessed using $):</p>
 <ul>
@@ -195,29 +191,42 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing easytidymodels</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Amanda Park <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Amanda Park.</p>
+  <p></p>
+<p>Developed by Amanda Park.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -225,6 +234,8 @@
 
   
 
+
+  
 
   </body>
 </html>
