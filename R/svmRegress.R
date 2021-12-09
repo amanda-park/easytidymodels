@@ -90,8 +90,8 @@ svmRegress <- function(response = response,
     rbf_sigma = tune::tune(),
     margin = tune::tune()
   ) %>%
-    set_engine("kernlab") %>%
-    set_mode("regression")
+    parsnip::set_engine("kernlab") %>%
+    parsnip::set_mode("regression")
 
   params <- dials::parameters(
     dials::cost(),
