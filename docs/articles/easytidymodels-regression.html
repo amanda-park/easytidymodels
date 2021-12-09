@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">easytidymodels</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -72,8 +68,7 @@
 
       
 
-      </header><link href="easytidymodels-regression_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="easytidymodels-regression_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>easytidymodels Regression Example</h1>
@@ -86,40 +81,40 @@
 
     
     
-<div id="set-up-package-and-load-in-data-for-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-up-package-and-load-in-data-for-analysis" class="anchor"></a>Set up package and load in data for analysis</h2>
+<div class="section level2">
+<h2 id="set-up-package-and-load-in-data-for-analysis">Set up package and load in data for analysis<a class="anchor" aria-label="anchor" href="#set-up-package-and-load-in-data-for-analysis"></a>
+</h2>
 <p>Generally, you want to set a seed so that your analysis is reproducible.</p>
 <p>If easytidymodels isn’t installed you can install it through devtools, which is on Github.</p>
 <p>If you want to use the dataset provided here you will need to install modeldata.</p>
 <p>Parallel computing is used through the doParallel library to speed up computations.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span>
 
 <span class="co"># install.packages("devtools")</span>
 <span class="co"># devtools::install_github("amanda-park/easytidymodels")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">easytidymodels</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes">recipes</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">easytidymodels</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ames</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span>
 <span class="co">#Use parallel compute to speed up processing time</span>
-<span class="va">cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></code></pre></div>
+<span class="va">cores</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="va">cores</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="prepare-data-for-analysis-with-preprocessing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#prepare-data-for-analysis-with-preprocessing" class="anchor"></a>Prepare data for analysis with preprocessing</h2>
+<div class="section level2">
+<h2 id="prepare-data-for-analysis-with-preprocessing">Prepare data for analysis with preprocessing<a class="anchor" aria-label="anchor" href="#prepare-data-for-analysis-with-preprocessing"></a>
+</h2>
 <p>Define your response variable and save it as resp.</p>
 <p>trainTestSplit is a wrapper for rsample’s function to split your training and testing data. There is the option to split based on time dependency and to stratify on the response if you aren’t splitting based on time.</p>
-<p>recipes are your model’s preprocessing steps. This varies for each data set you work with the level of preprocessing you need, so instead this portion of tidymodels has not been given a wrapper. The available preprocessing steps that you can use in recipes can be seen <a href="https://recipes.tidymodels.org/reference/index.html">here</a>.</p>
+<p>recipes are your model’s preprocessing steps. This varies for each data set you work with the level of preprocessing you need, so instead this portion of tidymodels has not been given a wrapper. The available preprocessing steps that you can use in recipes can be seen <a href="https://recipes.tidymodels.org/reference/index.html" class="external-link">here</a>.</p>
 <p>After your recipe is set up, you can split your data into training and testing and then bake your recipe’s preprocessing steps into the model.</p>
 <p>Lastly, you can set up a cross-validation fold object through the function cvFolds.</p>
 <p>These objects are all necessary for fitting the variety of models that tidymodels offers you.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Define your response variable and formula object here</span>
 <span class="va">resp</span> <span class="op">&lt;-</span> <span class="st">"Sale_Price"</span>
-<span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">resp</span>, <span class="st">"."</span>, sep<span class="op">=</span><span class="st">"~"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">resp</span>, <span class="st">"."</span>, sep<span class="op">=</span><span class="st">"~"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">#Split data into training and testing sets</span>
 <span class="va">split</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trainTestSplit.html">trainTestSplit</a></span><span class="op">(</span><span class="va">ames</span>,
@@ -127,24 +122,24 @@
                         responseVar <span class="op">=</span> <span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#Create recipe for feature engineering for dataset, varies based on data working with</span>
-<span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">split</span><span class="op">$</span><span class="va">train</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_log.html">step_log</a></span><span class="op">(</span><span class="va">resp</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_YeoJohnson.html">step_YeoJohnson</a></span><span class="op">(</span><span class="va">Lot_Area</span>, <span class="va">Gr_Liv_Area</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_other.html">step_other</a></span><span class="op">(</span><span class="va">Neighborhood</span>, threshold <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span>  <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_nominal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_nzv.html">step_nzv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_corr.html">step_corr</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_outcomes</a></span><span class="op">(</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">rec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">split</span><span class="op">$</span><span class="va">train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_log.html" class="external-link">step_log</a></span><span class="op">(</span><span class="va">resp</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_YeoJohnson.html" class="external-link">step_YeoJohnson</a></span><span class="op">(</span><span class="va">Lot_Area</span>, <span class="va">Gr_Liv_Area</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_other.html" class="external-link">step_other</a></span><span class="op">(</span><span class="va">Neighborhood</span>, threshold <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_zv.html" class="external-link">step_zv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_nzv.html" class="external-link">step_nzv</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_corr.html" class="external-link">step_corr</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_numeric</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_outcomes</a></span><span class="op">(</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">train_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">split</span><span class="op">$</span><span class="va">train</span><span class="op">)</span>
-<span class="va">test_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">split</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>
+<span class="va">train_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">split</span><span class="op">$</span><span class="va">train</span><span class="op">)</span>
+<span class="va">test_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">rec</span>, <span class="va">split</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>
 
 <span class="va">folds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cvFolds.html">cvFolds</a></span><span class="op">(</span><span class="va">train_df</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="about-all-regression-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#about-all-regression-models" class="anchor"></a>About all regression models</h1>
+<div class="section level1">
+<h1 id="about-all-regression-models">About all regression models<a class="anchor" aria-label="anchor" href="#about-all-regression-models"></a>
+</h1>
 <p>General workflow they all follow:</p>
 <ul>
 <li>Fit the model specified to training data</li>
@@ -155,24 +150,24 @@
 <p>Available evaluation metrics for evalMetric:</p>
 <ul>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/rmse.html">RMSE</a> (Root Mean Squared Error, call “rmse”)</li>
+<a href="https://yardstick.tidymodels.org/reference/rmse.html" class="external-link">RMSE</a> (Root Mean Squared Error, call “rmse”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mae.html">MAE</a> (Mean Absolute Error, call “mae”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mae.html" class="external-link">MAE</a> (Mean Absolute Error, call “mae”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/rsq.html">RSQ</a> (R-Squared, call “rsq”)</li>
+<a href="https://yardstick.tidymodels.org/reference/rsq.html" class="external-link">RSQ</a> (R-Squared, call “rsq”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/mase.html">MASE</a> (Mean Absolute Scaled Error, call “mase”)</li>
+<a href="https://yardstick.tidymodels.org/reference/mase.html" class="external-link">MASE</a> (Mean Absolute Scaled Error, call “mase”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/ccc.html">CCC</a> (Concordance Correlation Coefficient, call “ccc”)</li>
+<a href="https://yardstick.tidymodels.org/reference/ccc.html" class="external-link">CCC</a> (Concordance Correlation Coefficient, call “ccc”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/iic.html">IIC</a> (Index of Ideality of Correlation, call “iic”)</li>
+<a href="https://yardstick.tidymodels.org/reference/iic.html" class="external-link">IIC</a> (Index of Ideality of Correlation, call “iic”)</li>
 <li>
-<a href="https://yardstick.tidymodels.org/reference/huber_loss.html">HUBER_LOSS</a> (Huber loss, call “huber_loss”)</li>
+<a href="https://yardstick.tidymodels.org/reference/huber_loss.html" class="external-link">HUBER_LOSS</a> (Huber loss, call “huber_loss”)</li>
 </ul>
-<div id="fit-a-knn-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-knn-model" class="anchor"></a>Fit a KNN Model</h2>
-<p>Uses <code><a href="https://rdrr.io/r/base/library.html">library(kknn)</a></code> to compute model.</p>
+<div class="section level2">
+<h2 id="fit-a-knn-model">Fit a KNN Model<a class="anchor" aria-label="anchor" href="#fit-a-knn-model"></a>
+</h2>
+<p>Uses <code><a href="https://github.com/KlausVigo/kknn" class="external-link">library(kknn)</a></code> to compute model.</p>
 <p>This is what the KNN model tunes:</p>
 <ul>
 <li>
@@ -193,13 +188,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">knnReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">knnReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">knnReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">knnReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">knnReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">knnReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -208,12 +203,12 @@
 <span class="va">knnReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">knnReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
+<span class="va">knnReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="fit-a-support-vector-machine-radial-basis-kernel-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-support-vector-machine-radial-basis-kernel-model" class="anchor"></a>Fit a Support Vector Machine (Radial Basis Kernel) Model</h2>
-<p>Uses <code><a href="https://rdrr.io/r/base/library.html">library(kernlab)</a></code> to compute SVM model.</p>
+<div class="section level2">
+<h2 id="fit-a-support-vector-machine-radial-basis-kernel-model">Fit a Support Vector Machine (Radial Basis Kernel) Model<a class="anchor" aria-label="anchor" href="#fit-a-support-vector-machine-radial-basis-kernel-model"></a>
+</h2>
+<p>Uses <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(kernlab)</a></code> to compute SVM model.</p>
 <p>What the model tunes:</p>
 <ul>
 <li>
@@ -235,13 +230,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">svmReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">svmReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">svmReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">svmReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">svmReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">svmReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -250,12 +245,12 @@
 <span class="va">svmReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">svmReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
+<span class="va">svmReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="fit-a-tuned-linear-regression-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-tuned-linear-regression-model" class="anchor"></a>Fit a Tuned Linear Regression Model</h2>
-<p>Uses <code><a href="https://glmnet.stanford.edu">library(glmnet)</a></code> to compute tuned linear regression model.</p>
+<div class="section level2">
+<h2 id="fit-a-tuned-linear-regression-model">Fit a Tuned Linear Regression Model<a class="anchor" aria-label="anchor" href="#fit-a-tuned-linear-regression-model"></a>
+</h2>
+<p>Uses <code><a href="https://glmnet.stanford.edu" class="external-link">library(glmnet)</a></code> to compute tuned linear regression model.</p>
 <p>What the model tunes:</p>
 <ul>
 <li>
@@ -275,13 +270,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">linearReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">linearReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">linearReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">linearReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">linearReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">linearReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -290,12 +285,12 @@
 <span class="va">linearReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">linearReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
+<span class="va">linearReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="fit-a-random-forest-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-random-forest-model" class="anchor"></a>Fit a Random Forest Model</h2>
-<p>Uses <code><a href="https://github.com/imbs-hl/ranger">library(ranger)</a></code> to compute a random forest regression model.</p>
+<div class="section level2">
+<h2 id="fit-a-random-forest-model">Fit a Random Forest Model<a class="anchor" aria-label="anchor" href="#fit-a-random-forest-model"></a>
+</h2>
+<p>Uses <code><a href="https://github.com/imbs-hl/ranger" class="external-link">library(ranger)</a></code> to compute a random forest regression model.</p>
 <p>What the model tunes:</p>
 <ul>
 <li>
@@ -320,13 +315,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">rfReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">rfReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">rfReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">rfReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">rfReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">rfReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -335,7 +330,7 @@
 <span class="va">rfReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span>
+<span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span>
 
 <span class="co">#See feature importance of model</span>
 <span class="va">rfReg</span><span class="op">$</span><span class="va">featImpPlot</span>
@@ -343,10 +338,10 @@
 <span class="co">#See numeric feature importance of model</span>
 <span class="va">rfReg</span><span class="op">$</span><span class="va">featImpVars</span></code></pre></div>
 </div>
-<div id="fit-an-xgboost-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-an-xgboost-model" class="anchor"></a>Fit an XGBoost Model</h2>
-<p>Uses <code><a href="https://github.com/dmlc/xgboost">library(xgboost)</a></code> to compute a random forest regression model.</p>
+<div class="section level2">
+<h2 id="fit-an-xgboost-model">Fit an XGBoost Model<a class="anchor" aria-label="anchor" href="#fit-an-xgboost-model"></a>
+</h2>
+<p>Uses <code><a href="https://github.com/dmlc/xgboost" class="external-link">library(xgboost)</a></code> to compute a random forest regression model.</p>
 <p>What the model tunes:</p>
 <ul>
 <li>
@@ -379,13 +374,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">xgReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">xgReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">xgReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">xgReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">xgReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">xgReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -394,15 +389,15 @@
 <span class="va">xgReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">select_best</a></span><span class="op">(</span><span class="st">"rmse"</span><span class="op">)</span>
+<span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">select_best</a></span><span class="op">(</span><span class="st">"rmse"</span><span class="op">)</span>
 
 <span class="co">#See feature importance of model</span>
 <span class="va">xgReg</span><span class="op">$</span><span class="va">featImpPlot</span></code></pre></div>
 </div>
-<div id="fit-a-mars-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-a-mars-model" class="anchor"></a>Fit a MARS Model</h2>
-<p>Uses <code><a href="http://www.milbo.users.sonic.net/earth/">library(earth)</a></code> to compute a multi-adaptive regressive spline model.</p>
+<div class="section level2">
+<h2 id="fit-a-mars-model">Fit a MARS Model<a class="anchor" aria-label="anchor" href="#fit-a-mars-model"></a>
+</h2>
+<p>Uses <code><a href="http://www.milbo.users.sonic.net/earth/" class="external-link">library(earth)</a></code> to compute a multi-adaptive regressive spline model.</p>
 <p>What the model tunes:</p>
 <ul>
 <li>
@@ -423,13 +418,13 @@
 <span class="op">)</span>
 
 <span class="co">#Visualize training data and its predictions</span>
-<span class="va">marsReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">marsReg</span><span class="op">$</span><span class="va">trainPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for training data</span>
 <span class="va">marsReg</span><span class="op">$</span><span class="va">trainScore</span>
 
 <span class="co">#Visualize testing data and its predictions</span>
-<span class="va">marsReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
+<span class="va">marsReg</span><span class="op">$</span><span class="va">testPred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">.pred</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span>
 
 <span class="co">#View how model metrics for RMSE, R-Squared, and MAE look for testing data</span>
 <span class="va">marsReg</span><span class="op">$</span><span class="va">testScore</span>
@@ -438,92 +433,100 @@
 <span class="va">marsReg</span><span class="op">$</span><span class="va">final</span>
 
 <span class="co">#See how model fit looks based on another evaluation metric</span>
-<span class="va">marsReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
+<span class="va">marsReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"mae"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="model-stacking-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-stacking-example" class="anchor"></a>Model Stacking Example</h2>
+<div class="section level2">
+<h2 id="model-stacking-example">Model Stacking Example<a class="anchor" aria-label="anchor" href="#model-stacking-example"></a>
+</h2>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Finalize parameters </span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://parsnip.tidymodels.org" class="external-link">parsnip</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/tune" class="external-link">tune</a></span><span class="op">)</span>
 
-<span class="va">rfParam</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> <span class="fu">show_best</span><span class="op">(</span><span class="st">"rmse"</span>, n<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mtry</span>, <span class="va">min_n</span><span class="op">)</span>
+<span class="co"># Finalize parameters </span>
 
-<span class="va">xgParam</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> 
-  <span class="fu">show_best</span><span class="op">(</span><span class="st">"rmse"</span>, n<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mtry</span><span class="op">:</span><span class="va">sample_size</span><span class="op">)</span>
+<span class="va">rfParam</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"rmse"</span>, n<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">mtry</span>, <span class="va">min_n</span><span class="op">)</span>
+
+<span class="va">xgParam</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/show_best.html" class="external-link">show_best</a></span><span class="op">(</span><span class="st">"rmse"</span>, n<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">mtry</span><span class="op">:</span><span class="va">sample_size</span><span class="op">)</span>
 
 <span class="co"># Collect model predictions to stack</span>
 
-<span class="va">xgStack</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> 
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">xgParam</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span>, xgboost <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">xgStack</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">xgParam</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, <span class="op">!</span><span class="op">!</span><span class="va">resp</span>, xgboost <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">rfStack</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span> 
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">rfParam</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, randomforest <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">rfStack</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">rfParam</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, randomforest <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">marsStack</span> <span class="op">&lt;-</span> <span class="va">marsReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span>
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, mars <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">marsStack</span> <span class="op">&lt;-</span> <span class="va">marsReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, mars <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">knnStack</span> <span class="op">&lt;-</span> <span class="va">knnReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span>
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, knn <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">knnStack</span> <span class="op">&lt;-</span> <span class="va">knnReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, knn <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">svmStack</span> <span class="op">&lt;-</span> <span class="va">svmReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span>
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, svm <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">svmStack</span> <span class="op">&lt;-</span> <span class="va">svmReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, svm <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">lmStack</span> <span class="op">&lt;-</span> <span class="va">linearReg</span><span class="op">$</span><span class="va">tune</span> <span class="op">%&gt;%</span>
-  <span class="fu">collect_predictions</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, lm <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
+<span class="va">lmStack</span> <span class="op">&lt;-</span> <span class="va">linearReg</span><span class="op">$</span><span class="va">tune</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">tune</span><span class="fu">::</span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html" class="external-link">collect_predictions</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">.row</span>, lm <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span>
 
-<span class="va">stackDat</span> <span class="op">&lt;-</span> <span class="va">xgStack</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">rfStack</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">marsStack</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">knnStack</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">svmStack</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">lmStack</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">.row</span><span class="op">)</span>
+<span class="va">stackDat</span> <span class="op">&lt;-</span> <span class="va">xgStack</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">rfStack</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">marsStack</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">knnStack</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">svmStack</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">lmStack</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">.row</span><span class="op">)</span>
 
-<span class="va">stackModel</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">.2</span>, mixture <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">fit</span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">stackDat</span><span class="op">)</span>
+<span class="va">stackModel</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">.2</span>, mixture <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">stackDat</span><span class="op">)</span>
 
-<span class="va">stackModel</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">stackModel</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co">#Finalize model fits</span>
 
-<span class="va">xgFinal</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
-<span class="va">rfFinal</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
-<span class="va">marsFinal</span> <span class="op">&lt;-</span> <span class="va">marsReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
-<span class="va">knnFinal</span> <span class="op">&lt;-</span> <span class="va">knnReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
-<span class="va">svmFinal</span> <span class="op">&lt;-</span> <span class="va">svmReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
-<span class="va">lmFinal</span> <span class="op">&lt;-</span> <span class="va">linearReg</span><span class="op">$</span><span class="va">final</span> <span class="op">%&gt;%</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">xgFinal</span> <span class="op">&lt;-</span> <span class="va">xgReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">rfFinal</span> <span class="op">&lt;-</span> <span class="va">rfReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">marsFinal</span> <span class="op">&lt;-</span> <span class="va">marsReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">knnFinal</span> <span class="op">&lt;-</span> <span class="va">knnReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">svmFinal</span> <span class="op">&lt;-</span> <span class="va">svmReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
+<span class="va">lmFinal</span> <span class="op">&lt;-</span> <span class="va">linearReg</span><span class="op">$</span><span class="va">final</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html" class="external-link">last_fit</a></span><span class="op">(</span><span class="va">split</span><span class="op">$</span><span class="va">split</span><span class="op">)</span>
 
-<span class="va">stackFinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="st">"model"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">xgFinal</span>, <span class="va">rfFinal</span>, <span class="va">marsFinal</span>, <span class="va">knnFinal</span>, <span class="va">svmFinal</span>, <span class="va">lmFinal</span><span class="op">)</span>,
-                         <span class="st">"model_names"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"xgboost"</span>, <span class="st">"randomforest"</span>, <span class="st">"mars"</span>, <span class="st">"knn"</span>, <span class="st">"svm"</span>, <span class="st">"lm"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>pred <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">model</span>, <span class="va">collect_predictions</span><span class="op">)</span><span class="op">)</span>
+<span class="va">stackFinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  <span class="st">"model"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+    <span class="va">xgFinal</span>, <span class="va">rfFinal</span>, <span class="va">marsFinal</span>, <span class="va">knnFinal</span>, <span class="va">svmFinal</span>, <span class="va">lmFinal</span>
+    <span class="op">)</span>,
+  <span class="st">"model_names"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
+    <span class="st">"xgboost"</span>, <span class="st">"randomforest"</span>, <span class="st">"mars"</span>, <span class="st">"knn"</span>, <span class="st">"svm"</span>, <span class="st">"lm"</span>
+    <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pred <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">collect_predictions</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">stackFinal</span> <span class="op">&lt;-</span> <span class="va">stackFinal</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">model_names</span>, <span class="va">pred</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">unnest</span><span class="op">(</span><span class="va">pred</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">model_names</span>, values_from <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">.row</span>, <span class="op">-</span><span class="va">.config</span><span class="op">)</span>
+<span class="va">stackFinal</span> <span class="op">&lt;-</span> <span class="va">stackFinal</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">model_names</span>, <span class="va">pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">model_names</span>, values_from <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">.row</span>, <span class="op">-</span><span class="va">.config</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">stackModel</span>, <span class="va">stackFinal</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">stackFinal</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span><span class="st">"stack"</span> <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">pivot_longer</span><span class="op">(</span><span class="op">-</span><span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">rmse</span><span class="op">(</span>truth <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">resp</span>, estimate <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">.metric</span>, values_from <span class="op">=</span> <span class="va">.estimate</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">stackModel</span>, <span class="va">stackFinal</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="va">stackFinal</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="st">"stack"</span> <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="op">!</span><span class="op">!</span><span class="va">resp</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">yardstick</span><span class="fu">::</span><span class="fu"><a href="https://yardstick.tidymodels.org/reference/rmse.html" class="external-link">rmse</a></span><span class="op">(</span>truth <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">resp</span>, estimate <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">.metric</span>, values_from <span class="op">=</span> <span class="va">.estimate</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">rmse</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -539,11 +542,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Amanda Park.</p>
+  <p></p>
+<p>Developed by Amanda Park.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -551,6 +556,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -27,10 +27,11 @@ Some things to note:
 set.seed(24)
 
 # install.packages("devtools")
-devtools::install_github("amanda-park/easytidymodels")
+#devtools::install_github("amanda-park/easytidymodels")
 library(easytidymodels)
 library(recipes)
 library(doParallel)
+library(ggplot2)
 
 data(penguins, package = "modeldata")
 
@@ -66,9 +67,9 @@ split <- trainTestSplit(penguins,
 
 #Create recipe for feature engineering for dataset, varies based on data working with
 rec <- recipe(formula, data = split$train) %>%
-  step_knnimpute(!!resp) %>% 
+  step_impute_knn(!!resp) %>% 
   step_dummy(all_nominal(), -all_outcomes()) %>% 
-  step_medianimpute(all_predictors()) %>% 
+  step_impute_median(all_predictors()) %>% 
   step_normalize(all_predictors()) %>%
   step_nzv(all_predictors()) %>%
   step_corr(all_numeric(), -all_outcomes(), threshold = .8) %>%
